@@ -1,4 +1,4 @@
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Dropdown } from "react-bootstrap";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,22 @@ const NavigationBar = () => {
         </Nav>
       </Navbar.Collapse>
       <div className="protected-link-group link-group">
-        <Link to="/sale">Sälj</Link>
+        <Dropdown drop="start" className="custom-dropdown">
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            Välj aktion
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item as={Link} to="/news">
+              Skapa nyhet
+            </Dropdown.Item>
+            <Dropdown.Item as={Link} to="/sale">
+              Skapa sälj-objekt
+            </Dropdown.Item>
+            <Dropdown.Item as={Link} to="/sale">
+              Skapa köp-objekt
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </Navbar>
   );

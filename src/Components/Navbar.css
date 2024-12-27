@@ -47,3 +47,19 @@
   font-size: 20px;
   margin-right: 50px;
 }
+
+.custom-dropdown {
+  width: 100px;
+}
+
+.custom-dropdown a {
+  color: black;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.custom-dropdown a:hover {
+  transition: none;
+  transform: none;
+  color: black;
+}

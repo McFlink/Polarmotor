@@ -19,21 +19,24 @@ const Home = () => {
         <div className="latest-sale-container box">
           <h3>Senast inlagda till salu</h3>
           <div className="card custom-card">
+            <img src={mcImage} className="card-img-top" alt="..."></img>
             <div className="card-body">
-              <img src={mcImage} class="card-img-top" alt="..."></img>
-              <h5 class="card-title">Card title</h5>
-              <a href="#" class="btn btn-primary">
-                Gå till produkt
-              </a>
+              <h5 className="card-title">Card title</h5>
+              <button className="btn btn-primary">Gå till produkt</button>
             </div>
           </div>
           <div className="card custom-card">
+            <img src={mcImage} className="card-img-top" alt="..."></img>
             <div className="card-body">
-              <img src={mcImage} class="card-img-top" alt="..."></img>
-              <h5 class="card-title">Card title</h5>
-              <a href="#" class="btn btn-primary">
-                Gå till produkt
-              </a>
+              <h5 className="card-title">Card title 2</h5>
+              <button className="btn btn-primary">Gå till produkt</button>
+            </div>
+          </div>
+          <div className="card custom-card">
+            <img src={mcImage} className="card-img-top" alt="..."></img>
+            <div className="card-body">
+              <h5 className="card-title">Card title 2</h5>
+              <button className="btn btn-primary">Gå till produkt</button>
             </div>
           </div>
         </div>
@@ -41,7 +44,7 @@ const Home = () => {
           <h3>Senast inlagda under "köpes"</h3>
         </div>
         <div className="random-container box">
-          <h3>Random</h3>
+          <h3>Slumpade bilder från galleriet</h3>
         </div>
       </div>
     </>
