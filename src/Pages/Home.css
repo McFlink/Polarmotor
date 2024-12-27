@@ -1,0 +1,74 @@
+.home-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.home-container > div {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex: 1 1 calc(50% - 20px); /* 50% bredd minus gap */
+  box-sizing: border-box; /* Padding och border räknas in i storleken */
+  height: 41vh;
+  margin: 10px;
+}
+
+.home-container h3 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%); /* Centrera h3 horisontellt */
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+  font-weight: bold;
+  padding: 10px;
+  margin-right: 25px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  transition: transform 0.3s ease, color 0.3s ease;
+  max-width: 40rem;
+}
+
+li:hover {
+  color: #01264e;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.box {
+  background-color: #f5f5f5;
+  box-shadow: inset -3px 0 0 #eee;
+}
+
+.news-container {
+  flex-direction: column;
+  border-right: 1px solid #eee;
+}
+
+.latest-sale-container {
+  border-left: 1px solid #eee;
+}
+
+.latest-buy-container {
+  border-right: 1px solid #eee;
+}
+
+.random-container {
+  border-left: 1px solid #eee;
+}
+
+.custom-card {
+  width: 15rem;
+  max-height: 80%;
+  place-self: end;
+  margin: 20px;
+}

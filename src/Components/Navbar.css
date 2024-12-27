@@ -1,0 +1,49 @@
+.custom-navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #01264e;
+  width: 100%;
+  height: 120px;
+  position: sticky;
+  top: 0;
+  z-index: 1030; /* Högre än sidans innehåll */
+}
+
+.custom-brand-title {
+  color: #ffffff;
+  align-items: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin-right: 130px;
+  margin-left: 50px;
+}
+
+.custom-navlink-group {
+  display: flex;
+  margin-right: auto;
+  gap: 50px;
+  font-size: 20px;
+}
+
+.link-group a {
+  color: rgb(112, 143, 221);
+  text-decoration: none;
+  font-size: 18px;
+  transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.link-group a:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+  text-shadow: 0 0 10px rgb(0, 0, 0);
+}
+
+.protected-link-group {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  gap: 50px;
+  font-size: 20px;
+  margin-right: 50px;
+}
