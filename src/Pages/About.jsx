@@ -4,8 +4,8 @@ const About = () => {
   return (
     <>
       <div className="about-container">
-        <h1>Om Polarmotor</h1>
-        <div className="about-body">
+        <h1 className="mt-3">Om Polarmotor</h1>
+        <div className="about-body mt-4">
           <p>
             Polarmotor är ett företag i Haninge söder om Stockholm, med
             huvudinriktning att serva & reparera Verktygsmaskiner. Egen

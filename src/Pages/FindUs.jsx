@@ -1,7 +1,7 @@
 const FindUs = () => {
   return (
     <>
-      <p>Hitta oss</p>
+      <h3>Här kommer en kartfunktion med vägbeskrivning att finnas</h3>
     </>
   );
 };

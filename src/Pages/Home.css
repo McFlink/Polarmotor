@@ -70,9 +70,6 @@ li:hover {
   border-left: 1px solid #eee;
 }
 
-.card {
-}
-
 .custom-card {
   width: 90%; /* Procentbaserad bredd */
   max-width: 15rem; /* Maxbredd */

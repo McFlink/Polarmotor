@@ -1,7 +1,7 @@
 const Gallery = () => {
   return (
     <>
-      <p>Galleri</p>
+      <h3>Här kommer bild-galleri att finnas</h3>
     </>
   );
 };
