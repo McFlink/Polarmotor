@@ -2,12 +2,14 @@ import { useState } from "react";
 import "./Sale.css";
 import { InputGroup, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { saveSaleItem } from "../Services/firestoreService";
 
 const Sale = () => {
   const [item, setItem] = useState("");
-  const [price, setPrice] = useState(null);
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null); // State för förhandsgranskning
 
   const handleItemChange = (e) => {
     setItem(e.target.value);
@@ -23,7 +25,22 @@ const Sale = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Hämtar första filen
-    setImage(URL.createObjectURL(file)); // Skapar URL för förhandsgranskning
+    setImage(file); // Skapar URL för förhandsgranskning
+
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await saveSaleItem(item, price, description, image);
+
+    setItem("");
+    setPrice("");
+    setDescription("");
+    setImage(null);
+    setImagePreview(null);
   };
 
   return (
@@ -57,7 +74,7 @@ const Sale = () => {
         <InputGroup className="mb-3">
           <Form.Control type="file" onChange={handleFileChange} />
         </InputGroup>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
           Lägg upp
         </Button>
       </div>
@@ -76,7 +93,7 @@ const Sale = () => {
           {image ? (
             <div className="mt-5">
               <img
-                src={image}
+                src={imagePreview}
                 alt="Preview"
                 className="img-fluid"
                 width={400}

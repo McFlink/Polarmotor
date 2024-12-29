@@ -10,6 +10,13 @@ const Home = () => {
       <div className="home-container">
         <div className="news-container box">
           <h3>Senaste nyheterna</h3>
+          {/* Remove this when full release version is ready */}
+          <div className="under-contruction"></div>
+          <p className="temp-info-text">
+            Denna sida är under uppbyggnad. Ni kommer dock åt kontaktinformation
+            under 'Kontakt'-fliken högst upp, så tveka inte att höra av er om
+            det är något ni behöver hjälp med.
+          </p>
           <ul>
             <li>Nyhet 1</li>
             <li>Nyhet 2</li>
