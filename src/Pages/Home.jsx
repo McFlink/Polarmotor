@@ -56,6 +56,13 @@ const Home = () => {
           ) : (
             <p>Laddar...</p>
           )}
+          {/* <div className="card custom-card">
+            <img src={mcImage} className="card-img-top" alt="..."></img>
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
+              <button className="btn btn-primary">Gå till produkt</button>
+            </div>
+          </div> */}
         </div>
         <div className="latest-buy-container box">
           <h3>Senast inlagda under "köpes"</h3>

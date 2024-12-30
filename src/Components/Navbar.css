@@ -63,3 +63,7 @@
   transform: none;
   color: black;
 }
+
+.custom-nav-dropdown {
+  margin-right: 600px;
+}

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Sale.css";
 import { InputGroup, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getSaleItems, saveSaleItem } from "../Services/saleService";
+import { saveSaleItem } from "../Services/saleService";
 
 const Sale = () => {
   const [item, setItem] = useState("");
@@ -106,46 +106,6 @@ const Sale = () => {
           )}
         </div>
       </div>
-
-      {/* // Testning
-  const [sales, setSales] = useState([]);
-
-  useEffect(() => {
-    const fetchSales = async () => {
-      const salesData = await getSaleItems();
-      setSales(salesData);
-    };
-    fetchSales();
-  }, []);
-    
-
-      <div>
-        <h2>Sales</h2>
-        {sales.length > 0 ? (
-          sales.map((sale) => (
-            <div key={sale.id}>
-              <p>{sale.item}</p>
-              <p>{sale.price}</p>
-              <p>{sale.description}</p>
-              {sale.image ? (
-                <img
-                  src={sale.image}
-                  alt={sale.item}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/400x400";
-                  }}
-                  width="200"
-                />
-              ) : (
-                <p>N/A</p>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>Laddar...</p>
-        )}
-      </div> */}
     </div>
   );
 };

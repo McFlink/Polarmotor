@@ -17,6 +17,16 @@ const NavigationBar = () => {
           <Link to="/about">Om oss</Link>
         </Nav>
       </Navbar.Collapse>
+      <Dropdown className="custom-nav-dropdown">
+        <Dropdown.Toggle variant="dark" id="dropdown-basic">
+          Navigera
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item as={Link} to="/salesobjects">
+            Sälj-objekt
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
       <div className="protected-link-group link-group">
         <Dropdown drop="start" className="custom-dropdown">
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
