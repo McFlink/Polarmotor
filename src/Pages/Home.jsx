@@ -1,9 +1,23 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import mcImage from "../tempimages/mc.jfif";
+import { getSaleItems } from "../Services/saleService";
 
 const Home = () => {
+  const [sales, setSales] = useState([]);
+
+  useEffect(() => {
+    const fetchSales = async () => {
+      const salesData = await getSaleItems();
+      const sortedSales = salesData.sort((a, b) => b.createdAt - a.createdAt);
+      setSales(sortedSales);
+    };
+
+    fetchSales();
+  }, []);
+
+  const latestSales = sales.slice(0, 3);
+
   return (
     <>
       <h1 className="text-center m-4">Välkommen till Polarmotor</h1>
@@ -25,27 +39,23 @@ const Home = () => {
         </div>
         <div className="latest-sale-container box">
           <h3>Senast inlagda till salu</h3>
-          <div className="card custom-card">
-            <img src={mcImage} className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <button className="btn btn-primary">Gå till produkt</button>
-            </div>
-          </div>
-          <div className="card custom-card">
-            <img src={mcImage} className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title 2</h5>
-              <button className="btn btn-primary">Gå till produkt</button>
-            </div>
-          </div>
-          <div className="card custom-card">
-            <img src={mcImage} className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title 2</h5>
-              <button className="btn btn-primary">Gå till produkt</button>
-            </div>
-          </div>
+          {latestSales.length > 0 ? (
+            latestSales.map((sale) => (
+              <div key={sale.id} className="card custom-card">
+                <img
+                  src={sale.image || "https://via.placeholder.com/300"}
+                  className="card-img-top"
+                  alt={sale.item}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{sale.item}</h5>
+                  <button className="btn btn-primary">Gå till produkt</button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>Laddar...</p>
+          )}
         </div>
         <div className="latest-buy-container box">
           <h3>Senast inlagda under "köpes"</h3>
