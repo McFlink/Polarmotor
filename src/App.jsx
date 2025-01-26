@@ -8,6 +8,7 @@ import Gallery from "./Pages/Gallery.jsx";
 import FindUs from "./Pages/FindUs.jsx";
 import Sale from "./Pages/Sale.jsx";
 import News from "./Pages/News.jsx";
+import SalesObjects from "./Pages/SalesObjects.jsx";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/findus" element={<FindUs />} />
           <Route path="/sale" element={<Sale />} />
           <Route path="/news" element={<News />} />
+          <Route path="/salesobjects" element={<SalesObjects />} />
         </Routes>
       </Router>
     </>

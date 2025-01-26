@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getSaleItems } from "../Services/saleService";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [sales, setSales] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSales = async () => {
@@ -17,6 +19,10 @@ const Home = () => {
   }, []);
 
   const latestSales = sales.slice(0, 3);
+
+  const navigateToSalesObjects = () => {
+    navigate("/salesobjects");
+  };
 
   return (
     <>
@@ -38,7 +44,13 @@ const Home = () => {
           </ul>
         </div>
         <div className="latest-sale-container box">
-          <h3>Senast inlagda till salu</h3>
+          <button
+            className="go-to-page-button"
+            onClick={navigateToSalesObjects}
+          >
+            Se alla produkter
+          </button>
+          <h3 className="sale-title-h3">Senast inlagda till salu </h3>
           {latestSales.length > 0 ? (
             latestSales.map((sale) => (
               <div key={sale.id} className="card custom-card">
@@ -54,7 +66,7 @@ const Home = () => {
               </div>
             ))
           ) : (
-            <p>Laddar...</p>
+            <p>Inga säljobjekt än...</p>
           )}
           {/* <div className="card custom-card">
             <img src={mcImage} className="card-img-top" alt="..."></img>
