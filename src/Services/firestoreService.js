@@ -47,30 +47,9 @@ export const uploadImage = async (folder, Image, imageName) => {
   return await getDownloadURL(storageRef);
 };
 
+// iamgeUrl:en innehåller metadata och tokens också.
 export const deleteImage = async (imageUrl) => {
-  const storage = getStorage();
-  const imageRef = ref(storage, imageUrl);
+  const storage = getStorage(); // SKapar en instans av Storage-tjänsten. Hämta referens till firebase storage-tjänsten.
+  const imageRef = ref(storage, imageUrl); // Skapa referens till den specifika filen.
   await deleteObject(imageRef);
 };
-
-// try {
-//   let imageUrl = null;
-//   if (image) {
-//     const storage = getStorage();
-//     const storageRef = ref(storage, `images/${item}`);
-//     await uploadBytes(storageRef, image);
-//     imageUrl = await getDownloadURL(storageRef);
-//   }
-
-//   const docRef = await addDoc(collection(db, "sales"), {
-//     item,
-//     price,
-//     description,
-//     image: imageUrl,
-//     createdAt: new Date(),
-//   });
-
-//   console.log("Säljobjekt sparat med ID:", docRef.id);
-// } catch (error) {
-//   console.error("Ett fel uppstod när säljobjekt skulle sparas:", error);
-// }

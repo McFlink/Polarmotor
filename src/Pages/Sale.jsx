@@ -34,6 +34,19 @@ const Sale = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!item.trim()) {
+      alert("Fyll i produktens titel!");
+      return;
+    }
+    if (!price || price <= 0) {
+      alert("Fyll i ett giltigt pris!");
+      return;
+    }
+    if (!description.trim()) {
+      alert("Fyll i en beskrivning!");
+      return;
+    }
+
     await saveSaleItem(item, price, description, image);
 
     setItem("");
@@ -53,6 +66,7 @@ const Sale = () => {
             placeholder="Produkt att sälja (titel)"
             value={item}
             onChange={handleItemChange}
+            required
           />
         </InputGroup>
         <InputGroup className="mb-3">
@@ -61,6 +75,7 @@ const Sale = () => {
             placeholder="Pris"
             value={price}
             onChange={handlePriceChange}
+            required
           />
         </InputGroup>
         <InputGroup className="mb-3">
@@ -71,6 +86,7 @@ const Sale = () => {
             onChange={handleDescriptionChange}
             rows={4}
             style={{ resize: "none" }}
+            required
           />
         </InputGroup>
         <InputGroup className="mb-3">

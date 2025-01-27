@@ -36,7 +36,10 @@ export const getSaleItems = async () => {
 };
 
 export const deleteSaleItem = async (id, imageUrl) => {
-  await deleteImage(imageUrl);
+  // Kolla om bild finns i objektet
+  if (imageUrl) {
+    await deleteImage(imageUrl);
+  }
   return await deleteDocument("sales", id);
 };
 

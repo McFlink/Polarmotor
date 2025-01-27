@@ -4,13 +4,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getSaleItems } from "../Services/saleService";
 import GenericTable from "../Components/GenericTable";
 import CrudActions from "../Components/CrudActions";
-import { deleteSaleItem } from "../Services/saleService";
+import { deleteSaleItem, updateSaleItem } from "../Services/saleService";
 import ConfirmModal from "../Components/ConfirmModal";
+import { uploadImage, deleteImage } from "../Services/firestoreService";
 
 const SalesObjects = () => {
   const [sales, setSales] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [itemToUpdate, setItemToUpdate] = useState(null);
+  const [updatedData, setUpdatedData] = useState({});
 
   const fetchSales = async () => {
     const salesData = await getSaleItems();
@@ -28,7 +31,6 @@ const SalesObjects = () => {
   };
 
   const handleConfirmDelete = async () => {
-    console.log("Item to delete: ", itemToDelete);
     try {
       await deleteSaleItem(itemToDelete.id, itemToDelete.image);
       fetchSales();
@@ -40,7 +42,90 @@ const SalesObjects = () => {
     setItemToDelete(null);
   };
 
-  const handleUpdate = async (id) => {};
+  const handleUpdate = (item) => {
+    setItemToUpdate(item);
+    setUpdatedData({
+      description: item.description || "",
+      image: null, // Inget filobjekt laddas in direkt, användaren laddar upp om det behövs
+      item: item.item || "",
+      price: item.price || "",
+    });
+    setShowModal(true);
+  };
+
+  const handleConfirmUpdate = async () => {
+    try {
+      let imageUrl = updatedData.image;
+
+      // Om det finns en gammal bild och en ny bild ska laddas upp, ta bort den gamla bilden först
+      if (updatedData.image instanceof File) {
+        // Ta bort den gamla bilden från Firebase Storage om den finns
+        if (itemToUpdate && itemToUpdate.image) {
+          await deleteImage(itemToUpdate.image);
+        }
+
+        // Ladda upp den nya bilden
+        imageUrl = await uploadImage(
+          "sales-images",
+          updatedData.image,
+          itemToUpdate.item
+        );
+      } else {
+        imageUrl = itemToUpdate.image; // Behåll den gamla bilden om ingen ny laddas upp
+      }
+
+      // Skapa ett objekt att uppdatera
+      const updatedItem = {
+        ...updatedData,
+        image: imageUrl, // Använd den nya eller befintliga bild-URL:en
+      };
+
+      // Uppdatera i Firestore
+      await updateSaleItem(itemToUpdate.id, updatedItem);
+
+      fetchSales(); // Uppdatera listan
+      setShowModal(false); // Stäng modalen
+
+      // Återställ filinputen om en ny bild laddades upp
+      if (updatedData.image instanceof File) {
+        handleResetFileInput(); // Rensa file-inputfältet
+      }
+    } catch (error) {
+      console.error("Error updating sale:", error);
+      setShowModal(false);
+    }
+    setItemToUpdate(null);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target; // Hämta fältets namn och värde
+    setUpdatedData((prevData) => ({
+      ...prevData,
+      [name]: value, // Uppdatera rätt egenskap dynamiskt
+    }));
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; // Hämta den valda filen
+    setUpdatedData((prevData) => ({
+      ...prevData,
+      image: file, // Spara filen i updatedData
+    }));
+  };
+
+  const handleResetFileInput = () => {
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+      fileInput.value = ""; // Återställ till tomt
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setItemToDelete(null);
+    setItemToUpdate(null);
+    handleResetFileInput();
+  };
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -62,7 +147,12 @@ const SalesObjects = () => {
       header: "Bild",
       key: "image",
       centerContent: true,
-      render: (value) => <img src={value} alt="Produktbild" width="100" />,
+      render: (value) =>
+        value ? (
+          <img src={value} alt="Produktbild" width="100" />
+        ) : (
+          <p>Bild saknas</p>
+        ),
       style: { width: "15%" },
     },
     {
@@ -83,7 +173,7 @@ const SalesObjects = () => {
 
   return (
     <div className="sales-objects-container">
-      <h1 className="page-title">Till salu</h1>
+      <h1 className="page-title mx-auto">Till salu</h1>
       <div className="object-cards-container">
         {sales.length > 0 ? (
           sales.map((sale) => (
@@ -102,7 +192,7 @@ const SalesObjects = () => {
             </div>
           ))
         ) : (
-          <p>Laddar...</p>
+          <p className="fw-bold">Inga säljannonser tillgängliga</p>
         )}
       </div>
       {/* If (admin är inloggad && ....) */}
@@ -113,10 +203,71 @@ const SalesObjects = () => {
       </div>
       <ConfirmModal
         show={showModal}
-        message="Är du säker på att du vill ta bort denna produkt?"
-        onConfirm={handleConfirmDelete}
-        onCancel={() => setShowModal(false)}
-      />
+        message={
+          itemToUpdate
+            ? "Uppdatera produktens information:"
+            : "Är du säker på att du vill ta bort denna produkt?"
+        }
+        onConfirm={itemToUpdate ? handleConfirmUpdate : handleConfirmDelete}
+        onCancel={handleCloseModal}
+      >
+        {itemToUpdate ? (
+          <div>
+            <label className="form-label">Titel</label>
+            <input
+              type="text"
+              className="form-control mb-3"
+              name="item"
+              value={updatedData.item}
+              onChange={handleInputChange}
+            />
+
+            <label className="form-label">Beskrivning</label>
+            <textarea
+              className="form-control mb-3"
+              name="description"
+              rows="3"
+              value={updatedData.description}
+              onChange={handleInputChange}
+            ></textarea>
+
+            <label className="form-label">Pris</label>
+            <input
+              type="number"
+              className="form-control mb-3"
+              name="price"
+              value={updatedData.price}
+              onChange={handleInputChange}
+            />
+
+            <label className="form-label">Bild</label>
+            <input
+              type="file"
+              className="form-control mb-3"
+              name="image"
+              onChange={handleFileChange}
+            />
+          </div>
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            {itemToDelete && (
+              <>
+                <p className="fw-bold m-3">{itemToDelete.item}</p>
+                {itemToDelete.image ? (
+                  <img
+                    src={itemToDelete.image}
+                    alt="Produktbild"
+                    className="img-fluid"
+                    width="200"
+                  />
+                ) : (
+                  <p>Bild saknas</p>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </ConfirmModal>
     </div>
   );
 };
