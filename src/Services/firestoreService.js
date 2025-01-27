@@ -7,7 +7,13 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 // Add to database
 export const addDocument = async (collectionName, data) => {
@@ -39,6 +45,12 @@ export const uploadImage = async (folder, Image, imageName) => {
   const storageRef = ref(storage, `images/${folder}/${imageName}`);
   await uploadBytes(storageRef, Image);
   return await getDownloadURL(storageRef);
+};
+
+export const deleteImage = async (imageUrl) => {
+  const storage = getStorage();
+  const imageRef = ref(storage, imageUrl);
+  await deleteObject(imageRef);
 };
 
 // try {

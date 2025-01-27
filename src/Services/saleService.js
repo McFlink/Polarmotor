@@ -4,6 +4,7 @@ import {
   deleteDocument,
   updateDocument,
   uploadImage,
+  deleteImage,
 } from "./firestoreService";
 
 export const saveSaleItem = async (item, price, description, image) => {
@@ -34,7 +35,8 @@ export const getSaleItems = async () => {
   return await getDocuments("sales");
 };
 
-export const deleteSaleItem = async (id) => {
+export const deleteSaleItem = async (id, imageUrl) => {
+  await deleteImage(imageUrl);
   return await deleteDocument("sales", id);
 };
 

@@ -3,7 +3,6 @@ import { Table } from "react-bootstrap";
 import "./GenericTable.css";
 
 const GenericTable = ({ data, columns }) => {
-  console.log("Data passed: ", data);
   return (
     <Table striped bordered hover className="table-dark w-50 mx-auto mb-5">
       <thead>

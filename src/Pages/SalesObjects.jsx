@@ -5,32 +5,39 @@ import { getSaleItems } from "../Services/saleService";
 import GenericTable from "../Components/GenericTable";
 import CrudActions from "../Components/CrudActions";
 import { deleteSaleItem } from "../Services/saleService";
+import ConfirmModal from "../Components/ConfirmModal";
 
 const SalesObjects = () => {
   const [sales, setSales] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  const fetchSales = async () => {
+    const salesData = await getSaleItems();
+    const sortedSales = salesData.sort((a, b) => b.createdAt - a.createdAt);
+    setSales(sortedSales);
+  };
 
   useEffect(() => {
-    const fetchSales = async () => {
-      const salesData = await getSaleItems();
-      const sortedSales = salesData.sort((a, b) => b.createdAt - a.createdAt);
-      setSales(sortedSales);
-      console.log("Sales data: ", sortedSales);
-    };
-
     fetchSales();
   }, []);
 
-  const handleDelete = async (id) => {
-    const answer = window.confirm("Radera?");
-    if (!answer) return;
-    console.log("Delete sales object with id: ", id);
+  const handleDelete = (item) => {
+    setItemToDelete(item);
+    setShowModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    console.log("Item to delete: ", itemToDelete);
     try {
-      await deleteSaleItem(id);
-      setSales(sales.filter((sale) => sale.id !== id));
-      console.log("Sale deleted: ", id);
+      await deleteSaleItem(itemToDelete.id, itemToDelete.image);
+      fetchSales();
+      setShowModal(false);
     } catch (error) {
       console.error("Error deleting sale:", error);
+      setShowModal(false);
     }
+    setItemToDelete(null);
   };
 
   const handleUpdate = async (id) => {};
@@ -63,7 +70,7 @@ const SalesObjects = () => {
       render: (_, item) =>
         item && item.id ? (
           <CrudActions
-            id={item.id}
+            id={item}
             onUpdate={handleUpdate}
             onDelete={handleDelete}
           />
@@ -104,6 +111,12 @@ const SalesObjects = () => {
         <p className="text-center">(Administratörsvy)</p>
         <GenericTable data={sales} columns={salesColumns} />
       </div>
+      <ConfirmModal
+        show={showModal}
+        message="Är du säker på att du vill ta bort denna produkt?"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowModal(false)}
+      />
     </div>
   );
 };
