@@ -39,3 +39,8 @@
 .card-body {
   background: linear-gradient(0deg, #c2e3f0, #ffffff);
 }
+
+.existing-sale-items-table {
+  margin-top: 4rem;
+  background: linear-gradient(180deg, #72787a, #ffffff);
+}

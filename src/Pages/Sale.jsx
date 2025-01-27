@@ -50,7 +50,7 @@ const Sale = () => {
         <InputGroup className="mb-3">
           <Form.Control
             type="text"
-            placeholder="Produkt att sälja"
+            placeholder="Produkt att sälja (titel)"
             value={item}
             onChange={handleItemChange}
           />
@@ -65,10 +65,12 @@ const Sale = () => {
         </InputGroup>
         <InputGroup className="mb-3">
           <Form.Control
-            type="text"
+            as="textarea"
             placeholder="Beskrivning"
             value={description}
             onChange={handleDescriptionChange}
+            rows={4}
+            style={{ resize: "none" }}
           />
         </InputGroup>
         <InputGroup className="mb-3">

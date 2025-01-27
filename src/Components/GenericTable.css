@@ -1,0 +1,12 @@
+td {
+  vertical-align: middle;
+}
+
+.table-row {
+  line-height: 5rem;
+}
+
+.centeredCell {
+  text-align: center;
+  vertical-align: middle;
+}

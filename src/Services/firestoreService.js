@@ -5,6 +5,7 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
+  doc,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
