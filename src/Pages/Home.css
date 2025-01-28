@@ -59,6 +59,7 @@ li:hover {
 .news-container {
   flex-direction: column;
   border-right: 1px solid #eee;
+  position: relative;
 }
 
 .latest-sale-container {

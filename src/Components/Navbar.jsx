@@ -25,6 +25,9 @@ const NavigationBar = () => {
           <Dropdown.Item as={Link} to="/salesobjects">
             Sälj-objekt
           </Dropdown.Item>
+          <Dropdown.Item as={Link} to="/purchaseobjects">
+            Köp-objekt
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       <div className="protected-link-group link-group">
@@ -39,7 +42,7 @@ const NavigationBar = () => {
             <Dropdown.Item as={Link} to="/sale">
               Skapa sälj-objekt
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to="/sale">
+            <Dropdown.Item as={Link} to="/purchase">
               Skapa köp-objekt
             </Dropdown.Item>
           </Dropdown.Menu>

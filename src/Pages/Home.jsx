@@ -24,11 +24,26 @@ const Home = () => {
     navigate("/salesobjects");
   };
 
+  const navigateToNewsPage = () => {
+    navigate("/news");
+  };
+
+  const navigateToBuyObjects = () => {
+    navigate("/purchaseObjects");
+  };
+
+  const navigateToGallery = () => {
+    navigate("/gallery");
+  };
+
   return (
     <>
       <h1 className="text-center m-4">Välkommen till Polarmotor</h1>
       <div className="home-container">
         <div className="news-container box">
+          <button className="go-to-page-button" onClick={navigateToNewsPage}>
+            Se alla nyheter
+          </button>
           <h3>Senaste nyheterna</h3>
           {/* Remove this when full release version is ready */}
           <div className="under-contruction"></div>
@@ -77,9 +92,15 @@ const Home = () => {
           </div> */}
         </div>
         <div className="latest-buy-container box">
+          <button className="go-to-page-button" onClick={navigateToBuyObjects}>
+            Se alla produkter
+          </button>
           <h3>Senast inlagda under "köpes"</h3>
         </div>
         <div className="random-container box">
+          <button className="go-to-page-button" onClick={navigateToGallery}>
+            Se galleri
+          </button>
           <h3>Slumpade bilder från galleriet</h3>
         </div>
       </div>
