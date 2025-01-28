@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getSaleItems } from "../Services/saleService";
+import { getPurchaseItems } from "../Services/purchaseService";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [sales, setSales] = useState([]);
+  const [purchases, setPurchases] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +20,20 @@ const Home = () => {
     fetchSales();
   }, []);
 
+  useEffect(() => {
+    const fetchPurchases = async () => {
+      const purchaseData = await getPurchaseItems();
+      const sortedPurchases = purchaseData.sort(
+        (a, b) => b.createdAt - a.createdAt
+      );
+      setPurchases(sortedPurchases);
+    };
+
+    fetchPurchases();
+  }, []);
+
   const latestSales = sales.slice(0, 3);
+  const latestPurchases = purchases.slice(0, 3);
 
   const navigateToSalesObjects = () => {
     navigate("/salesobjects");
@@ -83,19 +98,29 @@ const Home = () => {
           ) : (
             <p>Inga säljobjekt än...</p>
           )}
-          {/* <div className="card custom-card">
-            <img src={mcImage} className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <button className="btn btn-primary">Gå till produkt</button>
-            </div>
-          </div> */}
         </div>
         <div className="latest-buy-container box">
           <button className="go-to-page-button" onClick={navigateToBuyObjects}>
             Se alla produkter
           </button>
           <h3>Senast inlagda under "köpes"</h3>
+          {latestPurchases.length > 0 ? (
+            latestPurchases.map((purchase) => (
+              <div key={purchase.id} className="card custom-card">
+                <img
+                  src={purchase.image || "https://via.placeholder.com/300"}
+                  className="card-img-top"
+                  alt={purchase.item}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{purchase.item}</h5>
+                  <button className="btn btn-primary">Gå till produkt</button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>Inga köp-objekt än...</p>
+          )}
         </div>
         <div className="random-container box">
           <button className="go-to-page-button" onClick={navigateToGallery}>

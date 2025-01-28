@@ -62,7 +62,8 @@ li:hover {
   position: relative;
 }
 
-.latest-sale-container {
+.latest-sale-container,
+.latest-buy-container {
   border-left: 1px solid #eee;
   display: flex;
   align-items: end;
