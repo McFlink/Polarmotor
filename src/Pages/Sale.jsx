@@ -3,6 +3,8 @@ import "./Sale.css";
 import { InputGroup, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { saveSaleItem } from "../Services/saleService";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Sale = () => {
   const [item, setItem] = useState("");
@@ -10,6 +12,8 @@ const Sale = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null); // State för förhandsgranskning
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleItemChange = (e) => {
     setItem(e.target.value);
@@ -54,6 +58,9 @@ const Sale = () => {
     setDescription("");
     setImage(null);
     setImagePreview(null);
+
+    queryClient.invalidateQueries("sales"); // Markerar cachade datan för "sales" som utdaterad/invalid, och triggar ny fetch från API nästa gång den används, dvs när vi navigerar Home-sidan.
+    navigate("/");
   };
 
   return (

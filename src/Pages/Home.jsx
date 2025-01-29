@@ -1,36 +1,33 @@
-import { useState, useEffect } from "react";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getSaleItems } from "../Services/saleService";
 import { getPurchaseItems } from "../Services/purchaseService";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
-  const [sales, setSales] = useState([]);
-  const [purchases, setPurchases] = useState([]);
+  const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
+
+  // Caching with React Query
+  const { data: sales = [], refetch: refetchSales } = useQuery({
+    queryKey: ["sales"],
+    queryFn: getSaleItems,
+    staleTime: oneYearInMs, // Så länge datan anses "fräsch". Data hämtas INTE igen efter 5 minuter så länge användaren är kvar på sidan, dock när sidan mountas (besöks) igen.
+    cacheTime: Infinity, // Anger hur länge cachad data finns kvar i cache, även efter att sidan har lämnats. Angiven tid tickar på även om appen lämnas. Rensas efter angiven tid.
+    refetchOnWindowFocus: false, // Hämtar INTE om data när fönstret återfår fokus
+    refetchOnReconnect: false, // Hämtar INTE om data om t ex anslutning försvunnit eller liknande
+  });
+
+  const { data: purchases = [], refetch: refetchPurchases } = useQuery({
+    queryKey: ["purchases"],
+    queryFn: getPurchaseItems,
+    staleTime: oneYearInMs,
+    cacheTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchSales = async () => {
-      const salesData = await getSaleItems();
-      const sortedSales = salesData.sort((a, b) => b.createdAt - a.createdAt);
-      setSales(sortedSales);
-    };
-
-    fetchSales();
-  }, []);
-
-  useEffect(() => {
-    const fetchPurchases = async () => {
-      const purchaseData = await getPurchaseItems();
-      const sortedPurchases = purchaseData.sort(
-        (a, b) => b.createdAt - a.createdAt
-      );
-      setPurchases(sortedPurchases);
-    };
-
-    fetchPurchases();
-  }, []);
 
   const latestSales = sales.slice(0, 3);
   const latestPurchases = purchases.slice(0, 3);

@@ -1,3 +1,4 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./App.css";
 import Navbar from "./Components/Navbar.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -11,10 +12,13 @@ import News from "./Pages/News.jsx";
 import SalesObjects from "./Pages/SalesObjects.jsx";
 import Purchase from "./Pages/Purchase.jsx";
 import PurchaseObjects from "./Pages/PurchaseObjects.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Navbar />
         <Routes>
@@ -29,8 +33,9 @@ function App() {
           <Route path="/salesobjects" element={<SalesObjects />} />
           <Route path="/purchaseobjects" element={<PurchaseObjects />} />
         </Routes>
+        <ReactQueryDevtools initialIsOpen={false} />
       </Router>
-    </>
+    </QueryClientProvider>
   );
 }
 

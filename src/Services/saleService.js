@@ -8,10 +8,19 @@ import {
 } from "./firestoreService";
 
 export const saveSaleItem = async (item, price, description, image) => {
+  // Ta bort mellanslag osv
+  const sanitizedItem = item
+    .replace(/\s+/g, "-")
+    .replace(/[^a-zA-Z0-9-_]/g, "");
+
+  // Unik timestamp på varje bildnamn
+  const timeStamp = new Date().getTime();
+  const imageName = `${sanitizedItem}_${timeStamp}`;
+
   try {
     let imageUrl = null;
     if (image) {
-      imageUrl = await uploadImage("sales-images", image, item);
+      imageUrl = await uploadImage("sales-images", image, imageName);
     }
 
     const saleData = {
