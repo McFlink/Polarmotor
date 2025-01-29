@@ -9,8 +9,8 @@ const Home = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
 
   // Caching with React Query
-  const { data: sales = [], refetch: refetchSales } = useQuery({
-    queryKey: ["sales"],
+  const { data: sales = [] } = useQuery({
+    queryKey: ["latestSales"],
     queryFn: getSaleItems,
     staleTime: oneYearInMs, // Så länge datan anses "fräsch". Data hämtas INTE igen efter 5 minuter så länge användaren är kvar på sidan, dock när sidan mountas (besöks) igen.
     cacheTime: Infinity, // Anger hur länge cachad data finns kvar i cache, även efter att sidan har lämnats. Angiven tid tickar på även om appen lämnas. Rensas efter angiven tid.
@@ -18,8 +18,8 @@ const Home = () => {
     refetchOnReconnect: false, // Hämtar INTE om data om t ex anslutning försvunnit eller liknande
   });
 
-  const { data: purchases = [], refetch: refetchPurchases } = useQuery({
-    queryKey: ["purchases"],
+  const { data: purchases = [] } = useQuery({
+    queryKey: ["latestPurchases"],
     queryFn: getPurchaseItems,
     staleTime: oneYearInMs,
     cacheTime: Infinity,

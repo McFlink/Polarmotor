@@ -59,7 +59,7 @@ const Sale = () => {
     setImage(null);
     setImagePreview(null);
 
-    queryClient.invalidateQueries("sales"); // Markerar cachade datan för "sales" som utdaterad/invalid, och triggar ny fetch från API nästa gång den används, dvs när vi navigerar Home-sidan.
+    queryClient.invalidateQueries("latestSales"); // Markerar cachade datan för "sales"-nyckeln som utdaterad/invalid, och triggar ny fetch från API nästa gång den används, dvs när vi navigerar Home-sidan.
     navigate("/");
   };
 

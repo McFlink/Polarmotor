@@ -1,29 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./SalesObjects.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getSaleItems } from "../Services/saleService";
 import GenericTable from "../Components/GenericTable";
 import CrudActions from "../Components/CrudActions";
-import { deleteSaleItem, updateSaleItem } from "../Services/saleService";
+import {
+  getSaleItems,
+  deleteSaleItem,
+  updateSaleItem,
+} from "../Services/saleService";
 import ConfirmModal from "../Components/ConfirmModal";
 import { uploadImage, deleteImage } from "../Services/firestoreService";
+import { useQuery } from "@tanstack/react-query";
 
 const SalesObjects = () => {
-  const [sales, setSales] = useState([]);
+  const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
+
   const [showModal, setShowModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [itemToUpdate, setItemToUpdate] = useState(null);
   const [updatedData, setUpdatedData] = useState({});
 
-  const fetchSales = async () => {
-    const salesData = await getSaleItems();
-    const sortedSales = salesData.sort((a, b) => b.createdAt - a.createdAt);
-    setSales(sortedSales);
-  };
-
-  useEffect(() => {
-    fetchSales();
-  }, []);
+  const { data: saleObjects = [], refetch: refetchSales } = useQuery({
+    queryKey: ["saleObjects"],
+    queryFn: async () => {
+      const salesData = await getSaleItems();
+      return salesData.sort((a, b) => b.createdAt - a.createdAt);
+    },
+    staleTime: oneYearInMs,
+    cacheTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
 
   const handleDelete = (item) => {
     setItemToDelete(item);
@@ -33,7 +40,7 @@ const SalesObjects = () => {
   const handleConfirmDelete = async () => {
     try {
       await deleteSaleItem(itemToDelete.id, itemToDelete.image);
-      fetchSales();
+      refetchSales();
       setShowModal(false);
     } catch (error) {
       console.error("Error deleting sale:", error);
@@ -83,7 +90,7 @@ const SalesObjects = () => {
       // Uppdatera i Firestore
       await updateSaleItem(itemToUpdate.id, updatedItem);
 
-      fetchSales(); // Uppdatera listan
+      refetchSales(); // Uppdatera listan
       setShowModal(false); // Stäng modalen
 
       // Återställ filinputen om en ny bild laddades upp
@@ -175,8 +182,8 @@ const SalesObjects = () => {
     <div className="sales-objects-container">
       <h1 className="page-title mx-auto">Till salu</h1>
       <div className="object-cards-container">
-        {sales.length > 0 ? (
-          sales.map((sale) => (
+        {saleObjects.length > 0 ? (
+          saleObjects.map((sale) => (
             <div key={sale.id} className="card custom-sales-object-card">
               <img
                 src={sale.image || "https://via.placeholder.com/300"}
@@ -200,7 +207,7 @@ const SalesObjects = () => {
       <div className="existing-sale-items-table">
         <h4 className="text-center py-4">Alla produkter till salu</h4>
         <p className="text-center">(Administratörsvy)</p>
-        <GenericTable data={sales} columns={salesColumns} />
+        <GenericTable data={saleObjects} columns={salesColumns} />
       </div>
       <ConfirmModal
         show={showModal}

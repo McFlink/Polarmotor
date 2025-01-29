@@ -1,34 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./PurchaseObjects.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getPurchaseItems } from "../Services/purchaseService";
 import GenericTable from "../Components/GenericTable";
 import CrudActions from "../Components/CrudActions";
 import {
+  getPurchaseItems,
   deletePurchaseItem,
   updatePurchaseItem,
 } from "../Services/purchaseService";
 import ConfirmModal from "../Components/ConfirmModal";
 import { uploadImage, deleteImage } from "../Services/firestoreService";
+import { useQuery } from "@tanstack/react-query";
 
 const PurchaseObjects = () => {
-  const [purchaseItems, setPurchaseItems] = useState([]);
+  const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
+
+  const { data: purchaseObjects = [], refetch: refetchPurchases } = useQuery({
+    queryKey: ["purchaseObjects"],
+    queryFn: async () => {
+      const purchaseData = await getPurchaseItems();
+      return purchaseData.sort((a, b) => b.createdAt - a.createdAt);
+    },
+    staleTime: oneYearInMs,
+    cacheTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
   const [showModal, setShowModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [itemToUpdate, setItemToUpdate] = useState(null);
   const [updatedData, setUpdatedData] = useState({});
-
-  const fetchPurchases = async () => {
-    const purchaseData = await getPurchaseItems();
-    const sortedPurchases = purchaseData.sort(
-      (a, b) => b.createdAt - a.createdAt
-    );
-    setPurchaseItems(sortedPurchases);
-  };
-
-  useEffect(() => {
-    fetchPurchases();
-  }, []);
 
   const handleDelete = (item) => {
     setItemToDelete(item);
@@ -38,7 +40,7 @@ const PurchaseObjects = () => {
   const handleConfirmDelete = async () => {
     try {
       await deletePurchaseItem(itemToDelete.id, itemToDelete.image);
-      fetchPurchases();
+      refetchPurchases();
       setShowModal(false);
     } catch (error) {
       console.error("Error deleting purchase object:", error);
@@ -87,7 +89,7 @@ const PurchaseObjects = () => {
       // Uppdatera i Firestore
       await updatePurchaseItem(itemToUpdate.id, updatedItem);
 
-      fetchPurchases(); // Uppdatera listan
+      refetchPurchases(); // Uppdatera listan
       setShowModal(false); // Stäng modalen
 
       // Återställ filinputen om en ny bild laddades upp
@@ -173,8 +175,8 @@ const PurchaseObjects = () => {
     <div className="purchase-objects-container">
       <h1 className="page-title mx-auto">Köpes</h1>
       <div className="object-cards-container">
-        {purchaseItems.length > 0 ? (
-          purchaseItems.map((purchase) => (
+        {purchaseObjects.length > 0 ? (
+          purchaseObjects.map((purchase) => (
             <div key={purchase.id} className="card custom-purchase-object-card">
               <img
                 src={purchase.image || "https://via.placeholder.com/300"}
@@ -198,7 +200,7 @@ const PurchaseObjects = () => {
       <div className="existing-purchase-items-table">
         <h4 className="text-center py-4">Alla köp-annonser</h4>
         <p className="text-center">(Administratörsvy)</p>
-        <GenericTable data={purchaseItems} columns={purchaseColumns} />
+        <GenericTable data={purchaseObjects} columns={purchaseColumns} />
       </div>
       <ConfirmModal
         show={showModal}
