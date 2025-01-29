@@ -88,6 +88,7 @@ const Home = () => {
                   src={sale.image || "https://via.placeholder.com/300"}
                   className="card-img-top"
                   alt={sale.item}
+                  loading="lazy"
                 />
                 <div className="card-body">
                   <h5 className="card-title">{sale.item}</h5>
@@ -111,6 +112,7 @@ const Home = () => {
                   src={purchase.image || "https://via.placeholder.com/300"}
                   className="card-img-top"
                   alt={purchase.item}
+                  loading="lazy"
                 />
                 <div className="card-body">
                   <h5 className="card-title">{purchase.item}</h5>

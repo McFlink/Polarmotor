@@ -36,7 +36,12 @@ const Contact = () => {
         </Table>
       </div>
       <div className="image-div">
-        <img src={mcImage} alt="motorcycle" className="img-fluid" />
+        <img
+          src={mcImage}
+          alt="motorcycle"
+          className="img-fluid"
+          loading="lazy"
+        />
       </div>
     </div>
   );

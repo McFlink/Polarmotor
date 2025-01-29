@@ -149,7 +149,7 @@ const SalesObjects = () => {
       centerContent: true,
       render: (value) =>
         value ? (
-          <img src={value} alt="Produktbild" width="100" />
+          <img src={value} alt="Produktbild" width="100" loading="lazy" />
         ) : (
           <p>Bild saknas</p>
         ),
@@ -182,6 +182,7 @@ const SalesObjects = () => {
                 src={sale.image || "https://via.placeholder.com/300"}
                 className="card-img-top img-fluid custom-card-image"
                 alt={sale.item}
+                loading="lazy"
               />
               <h5 className="card-title text-center mt-3 fw-bold">
                 {sale.item}
@@ -259,6 +260,7 @@ const SalesObjects = () => {
                     alt="Produktbild"
                     className="img-fluid"
                     width="200"
+                    loading="lazy"
                   />
                 ) : (
                   <p>Bild saknas</p>

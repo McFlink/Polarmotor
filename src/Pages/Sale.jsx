@@ -115,6 +115,7 @@ const Sale = () => {
                 alt="Preview"
                 className="img-fluid"
                 width={400}
+                loading="lazy"
               />
             </div>
           ) : (

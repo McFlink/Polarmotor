@@ -147,7 +147,7 @@ const PurchaseObjects = () => {
       centerContent: true,
       render: (value) =>
         value ? (
-          <img src={value} alt="Produktbild" width="100" />
+          <img src={value} alt="Produktbild" width="100" loading="lazy" />
         ) : (
           <p>Bild saknas</p>
         ),
@@ -180,6 +180,7 @@ const PurchaseObjects = () => {
                 src={purchase.image || "https://via.placeholder.com/300"}
                 className="card-img-top img-fluid custom-card-image"
                 alt={purchase.item}
+                loading="lazy"
               />
               <h5 className="card-title text-center mt-3 fw-bold">
                 {purchase.item}
@@ -257,6 +258,7 @@ const PurchaseObjects = () => {
                     alt="Produktbild"
                     className="img-fluid"
                     width="200"
+                    loading="lazy"
                   />
                 ) : (
                   <p>Bild saknas</p>
