@@ -8,7 +8,7 @@ import Contact from "./Pages/Contact.jsx";
 import Gallery from "./Pages/Gallery.jsx";
 import FindUs from "./Pages/FindUs.jsx";
 import Sale from "./Pages/Sale.jsx";
-import News from "./Pages/News.jsx";
+import CreateNews from "./Pages/CreateNews.jsx";
 import SalesObjects from "./Pages/SalesObjects.jsx";
 import Purchase from "./Pages/Purchase.jsx";
 import PurchaseObjects from "./Pages/PurchaseObjects.jsx";
@@ -29,7 +29,7 @@ function App() {
           <Route path="/findus" element={<FindUs />} />
           <Route path="/sale" element={<Sale />} />
           <Route path="/purchase" element={<Purchase />} />
-          <Route path="/news" element={<News />} />
+          <Route path="/news" element={<CreateNews />} />
           <Route path="/salesobjects" element={<SalesObjects />} />
           <Route path="/purchaseobjects" element={<PurchaseObjects />} />
         </Routes>

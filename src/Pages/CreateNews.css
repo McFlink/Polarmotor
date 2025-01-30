@@ -1,0 +1,29 @@
+.news-container {
+  display: flex;
+  justify-content: center;
+}
+
+.news-body,
+.news-review-container {
+  flex: 1; /* Gör att båda tar upp 50% */
+  max-width: 50%; /* Hindrar att de överlappar */
+  box-sizing: border-box; /* Gör att padding/marginal inte överskrider max-width */
+}
+
+.news-body {
+  padding-right: 20px; /* Skapar lite mellanrum */
+}
+
+.news-review-container {
+  background-color: #eee;
+  padding-left: 20px;
+  border-radius: 12px;
+}
+
+.review-info-header {
+  font-weight: bold;
+}
+
+.review-info-header span {
+  font-weight: normal;
+}
