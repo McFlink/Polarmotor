@@ -36,7 +36,7 @@ const NavigationBar = () => {
             Välj aktion
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item as={Link} to="/news">
+            <Dropdown.Item as={Link} to="/createnews">
               Skapa nyhet
             </Dropdown.Item>
             <Dropdown.Item as={Link} to="/sale">

@@ -43,7 +43,7 @@ const Home = () => {
 
   const latestSales = sales.slice(0, 3);
   const latestPurchases = purchases.slice(0, 3);
-  const latestNews = news.slice(0, 5);
+  const latestNews = news.slice(0, 3);
 
   const navigateToSalesObjects = () => {
     navigate("/salesobjects");
@@ -83,9 +83,9 @@ const Home = () => {
                 <li key={news.id} className="news-list">
                   <FaCircleArrowRight className="title-arrow me-2" />
                   {news.title}
-                  <p className="fw-light mt-1">
-                    {truncateText(news.content, 75)}
-                    <span className="fw-semibold text-primary">
+                  <p className="fw-light mt-1 d-flex justify-content-between align-items-center">
+                    {truncateText(news.content, 78)}
+                    <span className="fw-semibold text-primary d-flex align-items-center">
                       {" "}
                       <MdReadMore className="ms-2 me-2" />
                       läs mer
