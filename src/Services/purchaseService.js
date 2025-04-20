@@ -5,6 +5,7 @@ import {
   updateDocument,
   uploadImage,
   deleteImage,
+  getDocumentById,
 } from "./firestoreService";
 
 export const savePurchaseItem = async (item, description, image) => {
@@ -32,6 +33,15 @@ export const savePurchaseItem = async (item, description, image) => {
 
 export const getPurchaseItems = async () => {
   return await getDocuments("purchases");
+};
+
+export const getPurchaseItem = async (id) => {
+  try {
+    const purchaseItem = await getDocumentById("purchases", id);
+    return purchaseItem;
+  } catch (error) {
+    console.error("Ett fel uppstod när köpobjektet skulle hämtas:", error);
+  }
 };
 
 export const deletePurchaseItem = async (id, imageUrl) => {

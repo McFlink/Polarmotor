@@ -7,23 +7,32 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { FaCircleArrowRight } from "react-icons/fa6";
 import { MdReadMore } from "react-icons/md";
+import { useEffect } from "react";
 
 const Home = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
 
   // Caching with React Query
-  const { data: sales = [] } = useQuery({
+  const { data: sales = [], refetch: refetchData } = useQuery({
     queryKey: ["latestSales"],
-    queryFn: getSaleItems,
+    queryFn: async () => {
+      const salesData = await getSaleItems();
+      // Sortera säljobjekten så att de senaste visas först
+      return salesData.sort((a, b) => b.createdAt - a.createdAt);
+    },
     staleTime: oneYearInMs, // Så länge datan anses "fräsch". Data hämtas INTE igen efter 5 minuter så länge användaren är kvar på sidan, dock när sidan mountas (besöks) igen.
     cacheTime: Infinity, // Anger hur länge cachad data finns kvar i cache, även efter att sidan har lämnats. Angiven tid tickar på även om appen lämnas. Rensas efter angiven tid.
-    refetchOnWindowFocus: false, // Hämtar INTE om data när fönstret återfår fokus
+    refetchOnWindowFocus: false, // Hämtar om data när fönstret återfår fokus
     refetchOnReconnect: false, // Hämtar INTE om data om t ex anslutning försvunnit eller liknande
   });
 
   const { data: purchases = [] } = useQuery({
     queryKey: ["latestPurchases"],
-    queryFn: getPurchaseItems,
+    queryFn: async () => {
+      const purchaseData = await getPurchaseItems();
+
+      return purchaseData.sort((a, b) => b.createdAt - a.createdAt);
+    },
     staleTime: oneYearInMs,
     cacheTime: Infinity,
     refetchOnWindowFocus: false,
@@ -32,7 +41,10 @@ const Home = () => {
 
   const { data: news = [] } = useQuery({
     queryKey: ["latestNews"],
-    queryFn: getNewsArticles,
+    queryFn: async () => {
+      const newsData = await getNewsArticles();
+      return newsData.sort((a, b) => b.createdAt - a.createdAt);
+    },
     staleTime: oneYearInMs,
     cacheTime: Infinity,
     refetchOnWindowFocus: false,
@@ -42,12 +54,24 @@ const Home = () => {
   const navigate = useNavigate();
 
   const navigateToNewsDetail = (id) => {
-    navigate(`/news/${id}`);
+    navigate(`/news-article/${id}`);
+  };
+
+  const navigateToSaleItemDetails = (id) => {
+    navigate(`/sale-item/${id}`);
+  };
+
+  const navigateToPurchaseItemDetails = (id) => {
+    navigate(`/purchase-item/${id}`);
   };
 
   const latestSales = sales.slice(0, 3);
   const latestPurchases = purchases.slice(0, 3);
   const latestNews = news.slice(0, 3);
+
+  useEffect(() => {
+    refetchData();
+  }, [refetchData]);
 
   const navigateToSalesObjects = () => {
     navigate("/salesobjects");
@@ -74,13 +98,13 @@ const Home = () => {
 
   return (
     <>
-      <h1 className="text-center m-4">Välkommen till Polarmotor</h1>
+      <h2 className="text-center m-4">Välkommen till Polarmotor</h2>
       <div className="home-container">
         <div className="latest-news-container box">
           <button className="go-to-page-button" onClick={navigateToNewsPage}>
             Se alla nyheter
           </button>
-          <h3>Senaste nyheterna</h3>
+          <h4>Senaste nyheterna</h4>
           <ul className="ul-news-list">
             {latestNews.length > 0 ? (
               latestNews.map((news) => (
@@ -112,7 +136,7 @@ const Home = () => {
           >
             Se alla produkter
           </button>
-          <h3 className="sale-title-h3">Senast inlagda till salu </h3>
+          <h4 className="sale-title-h3">Senast inlagda till salu </h4>
           {latestSales.length > 0 ? (
             latestSales.map((sale) => (
               <div key={sale.id} className="card custom-card">
@@ -124,7 +148,12 @@ const Home = () => {
                 />
                 <div className="card-body">
                   <h5 className="card-title">{sale.item}</h5>
-                  <button className="btn btn-primary">Gå till produkt</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => navigateToSaleItemDetails(sale.id)}
+                  >
+                    Gå till produkt
+                  </button>
                 </div>
               </div>
             ))
@@ -136,7 +165,7 @@ const Home = () => {
           <button className="go-to-page-button" onClick={navigateToBuyObjects}>
             Se alla produkter
           </button>
-          <h3>Senast inlagda under "köpes"</h3>
+          <h4>Senast inlagda under "köpes"</h4>
           {latestPurchases.length > 0 ? (
             latestPurchases.map((purchase) => (
               <div key={purchase.id} className="card custom-card">
@@ -148,7 +177,13 @@ const Home = () => {
                 />
                 <div className="card-body">
                   <h5 className="card-title">{purchase.item}</h5>
-                  <button className="btn btn-primary">Gå till produkt</button>
+
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => navigateToPurchaseItemDetails(purchase.id)}
+                  >
+                    Gå till produkt
+                  </button>
                 </div>
               </div>
             ))
@@ -160,7 +195,7 @@ const Home = () => {
           <button className="go-to-page-button" onClick={navigateToGallery}>
             Se galleri
           </button>
-          <h3>Slumpade bilder från galleriet</h3>
+          <h4>Slumpade bilder från galleriet</h4>
         </div>
       </div>
     </>

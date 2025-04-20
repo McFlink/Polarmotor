@@ -11,6 +11,7 @@ import {
 import ConfirmModal from "../Components/ConfirmModal";
 import { uploadImage, deleteImage } from "../Services/firestoreService";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const SalesObjects = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
@@ -31,6 +32,12 @@ const SalesObjects = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
+
+  const navigate = useNavigate();
+
+  const navigateToSaleItemDetails = (id) => {
+    navigate(`/sale-item/${id}`);
+  };
 
   const handleDelete = (item) => {
     setItemToDelete(item);
@@ -184,7 +191,11 @@ const SalesObjects = () => {
       <div className="object-cards-container">
         {saleObjects.length > 0 ? (
           saleObjects.map((sale) => (
-            <div key={sale.id} className="card custom-sales-object-card">
+            <div
+              key={sale.id}
+              className="card custom-sales-object-card"
+              onClick={() => navigateToSaleItemDetails(sale.id)}
+            >
               <img
                 src={sale.image || "https://via.placeholder.com/300"}
                 className="card-img-top img-fluid custom-card-image"

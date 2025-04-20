@@ -19,9 +19,14 @@ const NewsArticle = () => {
     return <div>Laddar...</div>;
   }
 
+  const createdAtDate = article.createdAt
+    ? new Date(article.createdAt.seconds * 1000).toLocaleDateString()
+    : "";
+
   return (
     <div className="article-container">
       <h1 className="mb-5">{article.title}</h1>
+      <p>Upplagd: {createdAtDate}</p>
       {article.image && (
         <img
           src={article.image}

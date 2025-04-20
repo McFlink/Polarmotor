@@ -32,7 +32,7 @@ const News = () => {
   const navigate = useNavigate();
 
   const navigateToNewsDetail = (id) => {
-    navigate(`/news/${id}`);
+    navigate(`/news-article/${id}`);
   };
 
   // Kolumner som ska in i tabellen
@@ -167,24 +167,33 @@ const News = () => {
       <h1>Nyheter</h1>
       <div className="news-container d-flex flex-column align-items-center">
         {articles.length > 0 ? (
-          articles.map((article) => (
-            <div
-              key={article.id}
-              className="card custom-article-card"
-              onClick={() => navigateToNewsDetail(article.id)}
-            >
-              <img
-                src={article.image || "https://via.placeholder.com/300"}
-                className="article-img"
-                alt={article.title}
-                loading="lazy"
-              />
-              <div className="card-body">
-                <h5 className="card-title">{article.title}</h5>
-                <p className="card-text">{article.content}</p>
+          articles.map((article) => {
+            const createdAtDate = article.createdAt
+              ? new Date(article.createdAt.seconds * 1000).toLocaleDateString()
+              : "Okänd tid";
+
+            return (
+              <div
+                key={article.id}
+                className="card custom-article-card"
+                onClick={() => navigateToNewsDetail(article.id)}
+              >
+                <p className="created-at-date">{createdAtDate}</p>
+                <img
+                  src={article.image || "https://via.placeholder.com/300"}
+                  className="article-img"
+                  alt="Nyhetsbild"
+                  loading="lazy"
+                />
+                <div className="card-body mt-3">
+                  <h5 className="card-title mb-3">{article.title}</h5>
+                  <p className="content-text">
+                    {truncateText(article.content, 250)}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="fw-bold">Inga nyheter tillgängliga</p>
         )}

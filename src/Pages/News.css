@@ -1,11 +1,52 @@
+/* Anpassa kortet för att använda Flexbox */
 .custom-article-card {
-  width: 35%;
+  width: 40%;
   height: 30rem;
-  margin: 1.5rem;
+  margin-bottom: 6rem;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 1rem;
 }
 
-img {
-  width: 20%;
-  height: 10%;
+.article-img {
+  width: 35%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* För att centrera skapelsedatum och ge det lite utrymme */
+.created-at-date {
+  text-align: end !important;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Om du har en specifik klass för card-body */
+.card-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.card-body p {
+  font-size: 1rem;
+  color: #333;
+}
+
+.content-text {
+  width: 100%;
 }

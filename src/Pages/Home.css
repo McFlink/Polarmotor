@@ -16,11 +16,11 @@
   margin: 10px;
 }
 
-.box h3 {
+.box h4 {
   text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.home-container h3 {
+.home-container h4 {
   position: absolute;
   top: 0;
   left: 50%;
@@ -84,7 +84,7 @@ li:hover {
 }
 
 .custom-card {
-  width: 90%; /* Procentbaserad bredd */
+  width: 80%; /* Procentbaserad bredd */
   max-width: 15rem; /* Maxbredd */
   max-height: 75%; /* Automatisk höjd */
   aspect-ratio: 3 / 4; /* Håller proportionerna (3:4 ratio) */
@@ -128,13 +128,6 @@ li:hover {
 .custom-card .btn {
   padding: 5px 10px;
   font-size: 0.9rem;
-}
-
-.temp-info-text {
-  font-size: 1.1rem;
-  color: red;
-  font-weight: bold;
-  margin: 0 1rem 1rem 1rem;
 }
 
 .go-to-page-button {
