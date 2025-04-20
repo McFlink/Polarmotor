@@ -41,6 +41,10 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  const navigateToNewsDetail = (id) => {
+    navigate(`/news/${id}`);
+  };
+
   const latestSales = sales.slice(0, 3);
   const latestPurchases = purchases.slice(0, 3);
   const latestNews = news.slice(0, 3);
@@ -85,7 +89,10 @@ const Home = () => {
                   {news.title}
                   <p className="fw-light mt-1 d-flex justify-content-between align-items-center">
                     {truncateText(news.content, 78)}
-                    <span className="fw-semibold text-primary d-flex align-items-center">
+                    <span
+                      className="fw-semibold text-primary d-flex align-items-center"
+                      onClick={() => navigateToNewsDetail(news.id)}
+                    >
                       {" "}
                       <MdReadMore className="ms-2 me-2" />
                       läs mer

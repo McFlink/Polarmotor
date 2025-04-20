@@ -5,6 +5,7 @@ import {
   updateDocument,
   uploadImage,
   deleteImage,
+  getDocumentById,
 } from "./firestoreService";
 
 export const saveNewsArticle = async (title, content, image) => {
@@ -40,6 +41,15 @@ export const saveNewsArticle = async (title, content, image) => {
 
 export const getNewsArticles = async () => {
   return await getDocuments("news");
+};
+
+export const getNewsArticle = async (id) => {
+  try {
+    const article = await getDocumentById("news", id);
+    return article;
+  } catch (error) {
+    console.error("Ett fel uppstod när nyhetsartikel skulle hämtas:", error);
+  }
 };
 
 export const deleteNewsArticle = async (id, imageUrl) => {

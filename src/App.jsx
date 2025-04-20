@@ -14,6 +14,7 @@ import Purchase from "./Pages/Purchase.jsx";
 import PurchaseObjects from "./Pages/PurchaseObjects.jsx";
 import News from "./Pages/News.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import NewsArticle from "./Pages/NewsArticle.jsx";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/salesobjects" element={<SalesObjects />} />
           <Route path="/purchaseobjects" element={<PurchaseObjects />} />
           <Route path="/news" element={<News />} />
+          <Route path="/news/:id" element={<NewsArticle />} />
         </Routes>
         <ReactQueryDevtools initialIsOpen={false} />
       </Router>

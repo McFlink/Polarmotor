@@ -3,6 +3,7 @@ import {
   collection,
   addDoc,
   getDocs,
+  getDoc,
   updateDoc,
   deleteDoc,
   doc,
@@ -25,6 +26,18 @@ export const addDocument = async (collectionName, data) => {
 export const getDocuments = async (collectionName) => {
   const snapshot = await getDocs(collection(db, collectionName));
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
+// Get document from database
+export const getDocumentById = async (collectionName, id) => {
+  const docRef = doc(db, collectionName, id);
+  const snapshot = await getDoc(docRef);
+  if (snapshot.exists()) {
+    return { id: snapshot.id, ...snapshot.data() }; // Om dokumentet finns, returnera dess data
+  } else {
+    console.log("Dokumentet finns inte!");
+    return null;
+  }
 };
 
 // Update document in database
