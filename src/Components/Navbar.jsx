@@ -1,8 +1,22 @@
-import { Nav, Navbar, Dropdown } from "react-bootstrap";
+import { Nav, Navbar, Dropdown, Button, Modal } from "react-bootstrap";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import { useAdmin } from "../Context/AdminContext.jsx";
+import { useState } from "react";
+import LoginModal from "../Components/LoginModal";
 
 const NavigationBar = () => {
+  const { isAdmin, loginAsAdmin, logoutAdmin } = useAdmin();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleLoginClick = () => {
+    if (isAdmin) {
+      logoutAdmin(); // Om admin är inloggad, logga ut
+    } else {
+      setShowLoginModal(true); // Om inte inloggad, visa login-modal
+    }
+  };
+
   return (
     <Navbar bg="dark" expand="lg" className="custom-navbar">
       <div href="#home" className="custom-brand-title">
@@ -31,23 +45,35 @@ const NavigationBar = () => {
         </Dropdown.Menu>
       </Dropdown>
       <div className="protected-link-group link-group">
-        <Dropdown drop="start" className="custom-dropdown">
-          <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            Välj aktion
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item as={Link} to="/createnews">
-              Skapa nyhet
-            </Dropdown.Item>
-            <Dropdown.Item as={Link} to="/sale">
-              Skapa sälj-objekt
-            </Dropdown.Item>
-            <Dropdown.Item as={Link} to="/purchase">
-              Skapa köp-objekt
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        {isAdmin ? (
+          <Dropdown drop="start" className="custom-dropdown">
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+              Admin
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/createnews">
+                Skapa nyhet
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/sale">
+                Skapa sälj-objekt
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/purchase">
+                Skapa köp-objekt
+              </Dropdown.Item>
+              <Dropdown.Item onClick={logoutAdmin}>Logga ut</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <Button variant="primary" onClick={handleLoginClick}>
+            Logga in som admin
+          </Button>
+        )}
       </div>
+      <LoginModal
+        showLoginModal={showLoginModal}
+        setShowLoginModal={setShowLoginModal}
+        loginAsAdmin={loginAsAdmin}
+      />
     </Navbar>
   );
 };

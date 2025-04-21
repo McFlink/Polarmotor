@@ -17,33 +17,44 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import NewsArticle from "./Pages/NewsArticle.jsx";
 import SaleItemDetails from "./Pages/SaleItemDetails.jsx";
 import PurchaseItemDetails from "./Pages/PurchaseItemDetails.jsx";
+import { AdminProvider } from "./Context/AdminContext.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/findus" element={<FindUs />} />
-          <Route path="/sale" element={<Sale />} />
-          <Route path="/purchase" element={<Purchase />} />
-          <Route path="/createnews" element={<CreateNews />} />
-          <Route path="/salesobjects" element={<SalesObjects />} />
-          <Route path="/purchaseobjects" element={<PurchaseObjects />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/news-article/:id" element={<NewsArticle />} />
-          <Route path="/sale-item/:id" element={<SaleItemDetails />} />
-          <Route path="/purchase-item/:id" element={<PurchaseItemDetails />} />
-        </Routes>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </Router>
-    </QueryClientProvider>
+    <AdminProvider>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/findus" element={<FindUs />} />
+
+            <Route element={<ProtectedRoute />}>
+              <Route path="/sale" element={<Sale />} />
+              <Route path="/purchase" element={<Purchase />} />
+              <Route path="/createnews" element={<CreateNews />} />
+            </Route>
+
+            <Route path="/salesobjects" element={<SalesObjects />} />
+            <Route path="/purchaseobjects" element={<PurchaseObjects />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/news-article/:id" element={<NewsArticle />} />
+            <Route path="/sale-item/:id" element={<SaleItemDetails />} />
+            <Route
+              path="/purchase-item/:id"
+              element={<PurchaseItemDetails />}
+            />
+          </Routes>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </Router>
+      </QueryClientProvider>
+    </AdminProvider>
   );
 }
 

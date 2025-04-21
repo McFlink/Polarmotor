@@ -12,9 +12,11 @@ import ConfirmModal from "../Components/ConfirmModal";
 import { uploadImage, deleteImage } from "../Services/firestoreService";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useAdmin } from "../Context/AdminContext.jsx";
 
 const SalesObjects = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
+  const { isAdmin } = useAdmin();
 
   const [showModal, setShowModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -214,12 +216,13 @@ const SalesObjects = () => {
           <p className="fw-bold">Inga säljannonser tillgängliga</p>
         )}
       </div>
-      {/* If (admin är inloggad && ....) */}
-      <div className="existing-sale-items-table">
-        <h4 className="text-center py-4">Alla produkter till salu</h4>
-        <p className="text-center">(Administratörsvy)</p>
-        <GenericTable data={saleObjects} columns={salesColumns} />
-      </div>
+      {isAdmin && (
+        <div className="existing-sale-items-table">
+          <h4 className="text-center py-4">Alla produkter till salu</h4>
+          <p className="text-center">(Administratörsvy)</p>
+          <GenericTable data={saleObjects} columns={salesColumns} />
+        </div>
+      )}
       <ConfirmModal
         show={showModal}
         message={

@@ -11,9 +11,11 @@ import {
 import ConfirmModal from "../Components/ConfirmModal";
 import { uploadImage, deleteImage } from "../Services/firestoreService";
 import { useQuery } from "@tanstack/react-query";
+import { useAdmin } from "../Context/AdminContext.jsx";
 
 const PurchaseObjects = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
+  const { isAdmin } = useAdmin();
 
   const { data: purchaseObjects = [], refetch: refetchPurchases } = useQuery({
     queryKey: ["purchaseObjects"],
@@ -196,12 +198,13 @@ const PurchaseObjects = () => {
           <p className="fw-bold">Inga köp-annonser tillgängliga</p>
         )}
       </div>
-      {/* If (admin är inloggad && ....) */}
-      <div className="existing-purchase-items-table">
-        <h4 className="text-center py-4">Alla köp-annonser</h4>
-        <p className="text-center">(Administratörsvy)</p>
-        <GenericTable data={purchaseObjects} columns={purchaseColumns} />
-      </div>
+      {isAdmin && (
+        <div className="existing-purchase-items-table">
+          <h4 className="text-center py-4">Alla köp-annonser</h4>
+          <p className="text-center">(Administratörsvy)</p>
+          <GenericTable data={purchaseObjects} columns={purchaseColumns} />
+        </div>
+      )}
       <ConfirmModal
         show={showModal}
         message={
