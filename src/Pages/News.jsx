@@ -8,6 +8,8 @@ import "./News.css";
 import ConfirmModal from "../Components/ConfirmModal";
 import { uploadImage, deleteImage } from "../Services/firestoreService";
 import { deleteNewsArticle, updateNewsArticle } from "../Services/newsService";
+import DOMPurify from "dompurify";
+import { useAdmin } from "../Context/AdminContext.jsx";
 
 const News = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
@@ -16,6 +18,8 @@ const News = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [itemToUpdate, setItemToUpdate] = useState(null);
   const [updatedData, setUpdatedData] = useState({});
+
+  const { isAdmin } = useAdmin();
 
   const { data: articles = [], refetch: refetchArticles } = useQuery({
     queryKey: ["articles"],
@@ -33,6 +37,14 @@ const News = () => {
 
   const navigateToNewsDetail = (id) => {
     navigate(`/news-article/${id}`);
+  };
+
+  const sanitizedContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
+
+  const handleLineBreaks = (content) => {
+    return content.replace(/\n/g, "<br>");
   };
 
   // Kolumner som ska in i tabellen
@@ -172,6 +184,14 @@ const News = () => {
               ? new Date(article.createdAt.seconds * 1000).toLocaleDateString()
               : "Okänd tid";
 
+            // const truncatedContent = truncateText(article.content, 250); // Trunkera till 250 tecken
+            // const sanitizedTruncatedContent =
+            //   sanitizedContent(truncatedContent);
+
+            const sanitizedArticleContent = sanitizedContent(article.content);
+            const truncatedContent = truncateText(sanitizedArticleContent, 200);
+            const contentWithLineBreaks = handleLineBreaks(truncatedContent);
+
             return (
               <div
                 key={article.id}
@@ -179,16 +199,24 @@ const News = () => {
                 onClick={() => navigateToNewsDetail(article.id)}
               >
                 <p className="created-at-date">{createdAtDate}</p>
-                <img
-                  src={article.image || "https://via.placeholder.com/300"}
-                  className="article-img"
-                  alt="Nyhetsbild"
-                  loading="lazy"
-                />
+                {article.image && (
+                  <img
+                    src={article.image}
+                    className="article-img"
+                    alt="Nyhetsbild"
+                    loading="lazy"
+                  />
+                )}
                 <div className="card-body mt-3">
                   <h5 className="card-title mb-3">{article.title}</h5>
                   <p className="content-text">
-                    {truncateText(article.content, 250)}
+                    <span
+                      className="sanitized-content"
+                      dangerouslySetInnerHTML={{
+                        __html: contentWithLineBreaks,
+                      }}
+                    />
+                    <span className="text-danger"> ... läs mer</span>
                   </p>
                 </div>
               </div>
@@ -198,12 +226,13 @@ const News = () => {
           <p className="fw-bold">Inga nyheter tillgängliga</p>
         )}
       </div>
-      <div className="existing-news-items-table">
-        <h4 className="text-center py-4">Alla nyheter</h4>
-        <p className="text-center">(Administratörsvy)</p>
-        <GenericTable data={articles} columns={newsColumns} />
-      </div>
-
+      {isAdmin && (
+        <div className="existing-news-items-table">
+          <h4 className="text-center py-4">Alla nyheter</h4>
+          <p className="text-center">(Administratörsvy)</p>
+          <GenericTable data={articles} columns={newsColumns} />
+        </div>
+      )}
       <ConfirmModal
         show={showModal}
         message={

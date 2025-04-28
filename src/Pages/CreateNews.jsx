@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { saveNewsArticle } from "../Services/newsService";
+import DOMPurify from "dompurify";
 
 const CreateNews = () => {
   const [title, setTitle] = useState("");
@@ -19,7 +20,14 @@ const CreateNews = () => {
   };
 
   const handleNewsBodyChange = (e) => {
-    setContent(e.target.value);
+    let content = e.target.value;
+    setContent(content);
+  };
+
+  const sanitizedContentForPreview = (content) => {
+    // Ersätt radbrytningar (mellan användarens text) med <br>-taggar för att visa i HTML
+    let formattedContent = content.replace(/\n/g, "<br>");
+    return DOMPurify.sanitize(formattedContent); // Säkerställa att HTML är sanerat
   };
 
   const handleFileChange = (e) => {
@@ -91,7 +99,12 @@ const CreateNews = () => {
             Titel: <span>{title}</span>
           </p>
           <p className="review-info-header">
-            Innehåll: <span>{content}</span>
+            Innehåll:{" "}
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizedContentForPreview(content),
+              }}
+            />
           </p>
           {image ? (
             <div className="mt-5">

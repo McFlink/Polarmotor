@@ -43,4 +43,5 @@
 .existing-sale-items-table {
   margin-top: 4rem;
   background: linear-gradient(180deg, #72787a, #ffffff);
+  padding: 20px;
 }

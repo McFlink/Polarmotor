@@ -21,16 +21,19 @@ const SaleItemDetails = () => {
 
   return (
     <div className="sale-item-container">
-      <h1 className="mb-5">{saleItem.item}</h1>
-      {saleItem.image && (
-        <img
-          src={saleItem.image}
-          alt={saleItem.item}
-          className="img-fluid mb-5"
-        />
-      )}
-      <p>{saleItem.description}</p>
-      <p className="fw-bold mt-3">Pris: {saleItem.price} SEK</p>
+      <div className="sale-item">
+        <h1 className="mb-5">{saleItem.item}</h1>
+        {saleItem.image && (
+          <img
+            src={saleItem.image}
+            alt={saleItem.item}
+            className="img-fluid mb-5"
+          />
+        )}
+        <p className="fw-bold">Beskrivning:</p>
+        <p>{saleItem.description}</p>
+        <p className="fw-bold mt-3">Pris: {saleItem.price} SEK</p>
+      </div>
     </div>
   );
 };

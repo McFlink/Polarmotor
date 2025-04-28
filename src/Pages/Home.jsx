@@ -8,12 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import { FaCircleArrowRight } from "react-icons/fa6";
 import { MdReadMore } from "react-icons/md";
 import { useEffect } from "react";
+import DOMPurify from "dompurify";
 
 const Home = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
 
   // Caching with React Query
-  const { data: sales = [], refetch: refetchData } = useQuery({
+  const { data: sales = [], refetch: refetchSales } = useQuery({
     queryKey: ["latestSales"],
     queryFn: async () => {
       const salesData = await getSaleItems();
@@ -26,7 +27,7 @@ const Home = () => {
     refetchOnReconnect: false, // Hämtar INTE om data om t ex anslutning försvunnit eller liknande
   });
 
-  const { data: purchases = [] } = useQuery({
+  const { data: purchases = [], refetch: refetchPurchases } = useQuery({
     queryKey: ["latestPurchases"],
     queryFn: async () => {
       const purchaseData = await getPurchaseItems();
@@ -39,7 +40,7 @@ const Home = () => {
     refetchOnReconnect: false,
   });
 
-  const { data: news = [] } = useQuery({
+  const { data: news = [], refetch: refetchNews } = useQuery({
     queryKey: ["latestNews"],
     queryFn: async () => {
       const newsData = await getNewsArticles();
@@ -70,8 +71,10 @@ const Home = () => {
   const latestNews = news.slice(0, 3);
 
   useEffect(() => {
-    refetchData();
-  }, [refetchData]);
+    refetchSales();
+    refetchPurchases();
+    refetchNews();
+  }, [refetchSales, refetchPurchases, refetchNews]);
 
   const navigateToSalesObjects = () => {
     navigate("/salesobjects");
@@ -89,11 +92,17 @@ const Home = () => {
     navigate("/gallery");
   };
 
-  const truncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + "...";
-    }
-    return text;
+  const sanitizedContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
+
+  const sanitizeAndTruncateContent = (content, maxLength) => {
+    // Sanera och ta bort HTML-taggar som <br> eller andra taggar
+    const cleanText = DOMPurify.sanitize(content).replace(/<br\s*\/?>/g, " "); // Ta bort <br> taggar
+    // Trunkera den rengjorda texten
+    return cleanText.length > maxLength
+      ? cleanText.substring(0, maxLength) + "..."
+      : cleanText;
   };
 
   return (
@@ -107,23 +116,34 @@ const Home = () => {
           <h4>Senaste nyheterna</h4>
           <ul className="ul-news-list">
             {latestNews.length > 0 ? (
-              latestNews.map((news) => (
-                <li key={news.id} className="news-list">
-                  <FaCircleArrowRight className="title-arrow me-2" />
-                  {news.title}
-                  <p className="fw-light mt-1 d-flex justify-content-between align-items-center">
-                    {truncateText(news.content, 78)}
-                    <span
-                      className="fw-semibold text-primary d-flex align-items-center"
-                      onClick={() => navigateToNewsDetail(news.id)}
-                    >
-                      {" "}
-                      <MdReadMore className="ms-2 me-2" />
-                      läs mer
-                    </span>
-                  </p>
-                </li>
-              ))
+              latestNews.map((news) => {
+                const truncatedContent = sanitizeAndTruncateContent(
+                  news.content,
+                  70
+                );
+
+                return (
+                  <li key={news.id} className="news-list">
+                    <FaCircleArrowRight className="title-arrow me-2" />
+                    {news.title}
+                    <p className="fw-light mt-1 d-flex justify-content-between align-items-center">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: truncatedContent,
+                        }}
+                      />
+                      <span
+                        className="fw-semibold text-primary d-flex align-items-center"
+                        onClick={() => navigateToNewsDetail(news.id)}
+                      >
+                        {" "}
+                        <MdReadMore className="ms-2 me-2" />
+                        läs mer
+                      </span>
+                    </p>
+                  </li>
+                );
+              })
             ) : (
               <p>Inga nyheter än...</p>
             )}
