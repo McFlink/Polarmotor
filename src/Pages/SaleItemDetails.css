@@ -19,3 +19,9 @@
   max-width: 45%;
   height: auto;
 }
+
+.loading-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

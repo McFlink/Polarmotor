@@ -10,6 +10,7 @@ import { uploadImage, deleteImage } from "../Services/firestoreService";
 import { deleteNewsArticle, updateNewsArticle } from "../Services/newsService";
 import DOMPurify from "dompurify";
 import { useAdmin } from "../Context/AdminContext.jsx";
+import Spinner from "../Components/Spinner";
 
 const News = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
@@ -21,7 +22,11 @@ const News = () => {
 
   const { isAdmin } = useAdmin();
 
-  const { data: articles = [], refetch: refetchArticles } = useQuery({
+  const {
+    data: articles = [],
+    isLoading,
+    refetch: refetchArticles,
+  } = useQuery({
     queryKey: ["articles"],
     queryFn: async () => {
       const newsData = await getNewsArticles();
@@ -176,17 +181,15 @@ const News = () => {
 
   return (
     <div>
-      <h1>Nyheter</h1>
+      <h1 className="page-title mx-auto">Nyheter</h1>
       <div className="news-container d-flex flex-column align-items-center">
-        {articles.length > 0 ? (
+        {isLoading ? (
+          <Spinner />
+        ) : articles.length > 0 ? (
           articles.map((article) => {
             const createdAtDate = article.createdAt
               ? new Date(article.createdAt.seconds * 1000).toLocaleDateString()
               : "Okänd tid";
-
-            // const truncatedContent = truncateText(article.content, 250); // Trunkera till 250 tecken
-            // const sanitizedTruncatedContent =
-            //   sanitizedContent(truncatedContent);
 
             const sanitizedArticleContent = sanitizedContent(article.content);
             const truncatedContent = truncateText(sanitizedArticleContent, 200);

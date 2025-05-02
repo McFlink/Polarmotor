@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import Spinner from "../Components/Spinner";
 
 const AdminContext = createContext();
 
@@ -35,7 +36,7 @@ export const AdminProvider = ({ children }) => {
   };
 
   if (isLoading) {
-    return <div>Laddar...</div>;
+    return <Spinner />;
   }
 
   return (

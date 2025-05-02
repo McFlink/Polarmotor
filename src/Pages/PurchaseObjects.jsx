@@ -12,12 +12,17 @@ import ConfirmModal from "../Components/ConfirmModal";
 import { uploadImage, deleteImage } from "../Services/firestoreService";
 import { useQuery } from "@tanstack/react-query";
 import { useAdmin } from "../Context/AdminContext.jsx";
+import Spinner from "../Components/Spinner";
 
 const PurchaseObjects = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
   const { isAdmin } = useAdmin();
 
-  const { data: purchaseObjects = [], refetch: refetchPurchases } = useQuery({
+  const {
+    data: purchaseObjects = [],
+    isLoading,
+    refetch: refetchPurchases,
+  } = useQuery({
     queryKey: ["purchaseObjects"],
     queryFn: async () => {
       const purchaseData = await getPurchaseItems();
@@ -172,6 +177,10 @@ const PurchaseObjects = () => {
       style: { width: "25%" },
     },
   ];
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="purchase-objects-container">

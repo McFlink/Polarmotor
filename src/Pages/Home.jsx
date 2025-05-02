@@ -9,12 +9,17 @@ import { FaCircleArrowRight } from "react-icons/fa6";
 import { MdReadMore } from "react-icons/md";
 import { useEffect } from "react";
 import DOMPurify from "dompurify";
+import Spinner from "../Components/Spinner";
 
 const Home = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
 
   // Caching with React Query
-  const { data: sales = [], refetch: refetchSales } = useQuery({
+  const {
+    data: sales = [],
+    isLoading,
+    refetch: refetchSales,
+  } = useQuery({
     queryKey: ["latestSales"],
     queryFn: async () => {
       const salesData = await getSaleItems();
@@ -105,6 +110,10 @@ const Home = () => {
       : cleanText;
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <h2 className="text-center m-4">Välkommen till Polarmotor</h2>
@@ -169,7 +178,7 @@ const Home = () => {
                 <div className="card-body">
                   <h5 className="card-title">{sale.item}</h5>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary card-button"
                     onClick={() => navigateToSaleItemDetails(sale.id)}
                   >
                     Gå till produkt

@@ -5,3 +5,17 @@
   align-items: center;
   margin-top: 3rem;
 }
+
+.purchase-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  max-width: 1200px;
+}
+
+.purchase-item-container img {
+  max-width: 45%;
+  height: auto;
+}

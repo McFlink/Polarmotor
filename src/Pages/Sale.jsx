@@ -5,15 +5,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { saveSaleItem } from "../Services/saleService";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import DOMPurify from "dompurify";
 
 const Sale = () => {
   const [item, setItem] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null); // State för förhandsgranskning
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const sanitizedContentForPreview = (description) => {
+    // Ersätt radbrytningar (mellan användarens text) med <br>-taggar för att visa i HTML
+    let formattedDescription = description.replace(/\n/g, "<br>");
+    return DOMPurify.sanitize(formattedDescription); // Säkerställa att HTML är sanerat
+  };
 
   const handleItemChange = (e) => {
     setItem(e.target.value);
@@ -116,7 +123,12 @@ const Sale = () => {
             Pris: <span>{price} kr</span>
           </p>
           <p className="review-info-header">
-            Beskrivning: <span>{description}</span>
+            Beskrivning:{" "}
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizedContentForPreview(description),
+              }}
+            />
           </p>
           {image ? (
             <div className="mt-5">

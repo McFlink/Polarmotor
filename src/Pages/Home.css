@@ -6,7 +6,7 @@
 }
 
 .home-container > div {
-  background: linear-gradient(0deg, #cae5f0, #ffffff);
+  background: linear-gradient(0deg, rgb(202, 229, 240), #ffffff);
   position: relative;
   display: flex;
   justify-content: center;
@@ -126,8 +126,8 @@ li:hover {
 }
 
 .custom-card .btn {
-  padding: 5px 10px;
-  font-size: 0.9rem;
+  padding: 5px 15px;
+  font-size: 0.8rem;
 }
 
 .go-to-page-button {

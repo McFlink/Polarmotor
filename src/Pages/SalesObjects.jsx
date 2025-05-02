@@ -13,6 +13,7 @@ import { uploadImage, deleteImage } from "../Services/firestoreService";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../Context/AdminContext.jsx";
+import Spinner from "../Components/Spinner";
 
 const SalesObjects = () => {
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
@@ -22,6 +23,7 @@ const SalesObjects = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [itemToUpdate, setItemToUpdate] = useState(null);
   const [updatedData, setUpdatedData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data: saleObjects = [], refetch: refetchSales } = useQuery({
     queryKey: ["saleObjects"],
@@ -56,6 +58,7 @@ const SalesObjects = () => {
       setShowModal(false);
     }
     setItemToDelete(null);
+    setIsLoading(false);
   };
 
   const handleUpdate = (item) => {
@@ -213,7 +216,7 @@ const SalesObjects = () => {
             </div>
           ))
         ) : (
-          <p className="fw-bold">Inga säljannonser tillgängliga</p>
+          <Spinner />
         )}
       </div>
       {isAdmin && (
