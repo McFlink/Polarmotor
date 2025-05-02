@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { savePurchaseItem } from "../Services/purchaseService";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const Purchase = () => {
   const [item, setItem] = useState("");
@@ -20,6 +21,12 @@ const Purchase = () => {
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
+  };
+
+  const sanitizedContentForPreview = (content) => {
+    // Ersätt radbrytningar (mellan användarens text) med <br>-taggar för att visa i HTML
+    let formattedContent = content.replace(/\n/g, "<br>");
+    return DOMPurify.sanitize(formattedContent); // Säkerställa att HTML är sanerat
   };
 
   const handleFileChange = (e) => {
@@ -91,7 +98,12 @@ const Purchase = () => {
             Produkt: <span>{item}</span>
           </p>
           <p className="review-info-header">
-            Beskrivning: <span>{description}</span>
+            Beskrivning:{" "}
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizedContentForPreview(description),
+              }}
+            />
           </p>
           {image ? (
             <div className="mt-5">
