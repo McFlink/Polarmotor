@@ -15,15 +15,21 @@
 }
 
 .purchase-review-container {
+  color: black;
   background-color: #eee;
   padding-left: 20px;
   border-radius: 12px;
 }
 
 .review-info-header {
+  color: BLACK;
   font-weight: bold;
 }
 
 .review-info-header span {
   font-weight: normal;
+}
+
+em {
+  color: black;
 }

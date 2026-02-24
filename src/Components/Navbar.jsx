@@ -32,8 +32,8 @@ const NavigationBar = () => {
             <Link to="/about">Om oss</Link>
           </Nav>
         </Navbar.Collapse>
-        <div className="nav-actions">
-          <Dropdown className="custom-nav-dropdown">
+        <div className="nav-actions link-group">
+          <Dropdown className="custom-dropdown">
             <Dropdown.Toggle variant="dark" id="dropdown-basic">
               Navigera
             </Dropdown.Toggle>
