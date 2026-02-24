@@ -12,6 +12,8 @@ import DOMPurify from "dompurify";
 import Spinner from "../Components/Spinner";
 
 const Home = () => {
+  const placeholderImage =
+    "https://via.placeholder.com/640x480/0f172a/ffffff?text=Bild+saknas";
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
 
   // Caching with React Query
@@ -181,14 +183,22 @@ const Home = () => {
             {latestSales.length > 0 ? (
               latestSales.map((sale) => (
                 <div key={sale.id} className="card custom-card">
-                  <img
-                    src={sale.image || "https://via.placeholder.com/300"}
-                    className="card-img-top"
-                    alt={sale.item}
-                    loading="lazy"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">{sale.item}</h5>
+                  <div className="card-media">
+                    <img
+                      src={sale.image || placeholderImage}
+                      className="card-img-top"
+                      alt={sale.item || "Okänt objekt"}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = placeholderImage;
+                      }}
+                    />
+                  </div>
+                  <div className="card-body product-card-body">
+                    <h5 className="card-title">
+                      {sale.item || "Okänt objekt"}
+                    </h5>
                     <button
                       className="btn btn-primary card-button"
                       onClick={() => navigateToSaleItemDetails(sale.id)}
@@ -215,14 +225,22 @@ const Home = () => {
             {latestPurchases.length > 0 ? (
               latestPurchases.map((purchase) => (
                 <div key={purchase.id} className="card custom-card">
-                  <img
-                    src={purchase.image || "https://via.placeholder.com/300"}
-                    className="card-img-top"
-                    alt={purchase.item}
-                    loading="lazy"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">{purchase.item}</h5>
+                  <div className="card-media">
+                    <img
+                      src={purchase.image || placeholderImage}
+                      className="card-img-top"
+                      alt={purchase.item || "Okänt objekt"}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = placeholderImage;
+                      }}
+                    />
+                  </div>
+                  <div className="card-body product-card-body">
+                    <h5 className="card-title">
+                      {purchase.item || "Okänt objekt"}
+                    </h5>
 
                     <button
                       className="btn btn-primary"
