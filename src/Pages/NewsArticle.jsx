@@ -39,11 +39,15 @@ const NewsArticle = () => {
         <h1 className="mb-2 mt-3">{article.title}</h1>
         <p className="mb-5 fst-italic">Upplagd: {createdAtDate}</p>
         {article.image && (
-          <img
-            src={article.image}
-            alt={article.title}
-            className="img-fluid mb-5"
-          />
+          <div className="article-media">
+            <img
+              src={article.image}
+              alt={article.title}
+              className="img-fluid"
+              loading="lazy"
+            />
+            <div className="media-scrim" aria-hidden="true" />
+          </div>
         )}
         <div
           className="article-content mb-5"
