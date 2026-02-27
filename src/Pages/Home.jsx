@@ -122,8 +122,8 @@ const Home = () => {
         <span className="section-label">Premium verkstad</span>
         <h1 className="section-heading">Välkommen till Polarmotor</h1>
         <p className="lede">
-          Motorcykelverkstaden i norr för service, custom och prestanda. Se de
-          senaste nyheterna och objekten direkt nedan.
+          Motorcykelverkstaden i Haninge för service, custom och prestanda. Se
+          de senaste nyheterna och objekten direkt nedan.
         </p>
       </div>
 
