@@ -7,7 +7,7 @@ const Contact = () => {
   return (
     <div className="contact-container">
       <h1 className="mt-3">Kontakt</h1>
-      <div>
+      <div className="contact-content">
         <Table striped bordered hover className="mt-4 contact-table">
           <tbody>
             <tr>
@@ -29,19 +29,19 @@ const Contact = () => {
             <tr>
               <td>Email</td>
               <td>
-                <a href="mailto:kenneth@example.com">mail@polarmotor.se</a>
+                <a href="mailto:mail@polarmotor.se">mail@polarmotor.se</a>
               </td>
             </tr>
           </tbody>
         </Table>
-      </div>
-      <div className="image-div">
-        <img
-          src={mcImage}
-          alt="motorcycle"
-          className="img-fluid"
-          loading="lazy"
-        />
+        <div className="image-div">
+          <img
+            src={mcImage}
+            alt="motorcycle"
+            className="img-fluid"
+            loading="lazy"
+          />
+        </div>
       </div>
     </div>
   );

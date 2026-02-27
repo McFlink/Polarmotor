@@ -12,6 +12,8 @@ import DOMPurify from "dompurify";
 import Spinner from "../Components/Spinner";
 
 const Home = () => {
+  const placeholderImage =
+    "https://via.placeholder.com/640x480/0f172a/ffffff?text=Bild+saknas";
   const oneYearInMs = 365 * 24 * 60 * 60 * 1000; // 1 år i millisekunder
 
   // Caching with React Query
@@ -115,40 +117,51 @@ const Home = () => {
   }
 
   return (
-    <>
-      <h2 className="text-center m-4">Välkommen till Polarmotor</h2>
-      <div className="home-container">
-        <div className="latest-news-container box">
-          <button className="go-to-page-button" onClick={navigateToNewsPage}>
-            Se alla nyheter
-          </button>
-          <h4>Senaste nyheterna</h4>
+    <div className="page-shell home-shell">
+      <div className="home-header">
+        <span className="section-label">Premium verkstad</span>
+        <h1 className="section-heading">Välkommen till Polarmotor</h1>
+        <p className="lede">
+          Motorcykelverkstaden i Haninge för service, custom och prestanda. Se
+          de senaste nyheterna och objekten direkt nedan.
+        </p>
+      </div>
+
+      <div className="home-grid">
+        <section className="home-panel latest-news-container">
+          <div className="panel-top">
+            <h4>Senaste nyheterna</h4>
+            <button className="ghost-button" onClick={navigateToNewsPage}>
+              Se alla nyheter
+            </button>
+          </div>
           <ul className="ul-news-list">
             {latestNews.length > 0 ? (
               latestNews.map((news) => {
                 const truncatedContent = sanitizeAndTruncateContent(
                   news.content,
-                  70
+                  70,
                 );
 
                 return (
                   <li key={news.id} className="news-list">
-                    <FaCircleArrowRight className="title-arrow me-2" />
-                    {news.title}
-                    <p className="fw-light mt-1 d-flex justify-content-between align-items-center">
+                    <div className="news-title-row">
+                      <FaCircleArrowRight className="title-arrow me-2" />
+                      <span>{news.title}</span>
+                    </div>
+                    <p className="news-snippet">
                       <span
                         dangerouslySetInnerHTML={{
                           __html: truncatedContent,
                         }}
                       />
-                      <span
-                        className="fw-semibold text-primary d-flex align-items-center"
+                      <button
+                        className="text-button"
                         onClick={() => navigateToNewsDetail(news.id)}
                       >
-                        {" "}
                         <MdReadMore className="ms-2 me-2" />
                         läs mer
-                      </span>
+                      </button>
                     </p>
                   </li>
                 );
@@ -157,77 +170,104 @@ const Home = () => {
               <p>Inga nyheter än...</p>
             )}
           </ul>
-        </div>
-        <div className="latest-sale-container box">
-          <button
-            className="go-to-page-button"
-            onClick={navigateToSalesObjects}
-          >
-            Se alla produkter
-          </button>
-          <h4 className="sale-title-h3">Senast inlagda till salu </h4>
-          {latestSales.length > 0 ? (
-            latestSales.map((sale) => (
-              <div key={sale.id} className="card custom-card">
-                <img
-                  src={sale.image || "https://via.placeholder.com/300"}
-                  className="card-img-top"
-                  alt={sale.item}
-                  loading="lazy"
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{sale.item}</h5>
-                  <button
-                    className="btn btn-primary card-button"
-                    onClick={() => navigateToSaleItemDetails(sale.id)}
-                  >
-                    Gå till produkt
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>Inga säljobjekt än...</p>
-          )}
-        </div>
-        <div className="latest-buy-container box">
-          <button className="go-to-page-button" onClick={navigateToBuyObjects}>
-            Se alla produkter
-          </button>
-          <h4>Senast inlagda under "köpes"</h4>
-          {latestPurchases.length > 0 ? (
-            latestPurchases.map((purchase) => (
-              <div key={purchase.id} className="card custom-card">
-                <img
-                  src={purchase.image || "https://via.placeholder.com/300"}
-                  className="card-img-top"
-                  alt={purchase.item}
-                  loading="lazy"
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{purchase.item}</h5>
+        </section>
 
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => navigateToPurchaseItemDetails(purchase.id)}
-                  >
-                    Gå till produkt
-                  </button>
+        <section className="home-panel latest-sale-container">
+          <div className="panel-top">
+            <h4 className="sale-title-h3">Senast inlagda till salu</h4>
+            <button className="ghost-button" onClick={navigateToSalesObjects}>
+              Se alla produkter
+            </button>
+          </div>
+          <div className="card-grid">
+            {latestSales.length > 0 ? (
+              latestSales.map((sale) => (
+                <div key={sale.id} className="card custom-card">
+                  <div className="card-media">
+                    <img
+                      src={sale.image || placeholderImage}
+                      className="card-img-top"
+                      alt={sale.item || "Okänt objekt"}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = placeholderImage;
+                      }}
+                    />
+                  </div>
+                  <div className="card-body product-card-body">
+                    <h5 className="card-title">
+                      {sale.item || "Okänt objekt"}
+                    </h5>
+                    <button
+                      className="btn btn-primary card-button"
+                      onClick={() => navigateToSaleItemDetails(sale.id)}
+                    >
+                      Gå till produkt
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>Inga köp-objekt än...</p>
-          )}
-        </div>
-        <div className="random-container box">
-          <button className="go-to-page-button" onClick={navigateToGallery}>
-            Se galleri
-          </button>
-          <h4>Slumpade bilder från galleriet</h4>
-        </div>
+              ))
+            ) : (
+              <p>Inga säljobjekt än...</p>
+            )}
+          </div>
+        </section>
+
+        <section className="home-panel latest-buy-container">
+          <div className="panel-top">
+            <h4>Senast inlagda under köpes</h4>
+            <button className="ghost-button" onClick={navigateToBuyObjects}>
+              Se alla produkter
+            </button>
+          </div>
+          <div className="card-grid">
+            {latestPurchases.length > 0 ? (
+              latestPurchases.map((purchase) => (
+                <div key={purchase.id} className="card custom-card">
+                  <div className="card-media">
+                    <img
+                      src={purchase.image || placeholderImage}
+                      className="card-img-top"
+                      alt={purchase.item || "Okänt objekt"}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = placeholderImage;
+                      }}
+                    />
+                  </div>
+                  <div className="card-body product-card-body">
+                    <h5 className="card-title">
+                      {purchase.item || "Okänt objekt"}
+                    </h5>
+
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => navigateToPurchaseItemDetails(purchase.id)}
+                    >
+                      Gå till produkt
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Inga köp-objekt än...</p>
+            )}
+          </div>
+        </section>
+
+        <section className="home-panel random-container">
+          <div className="panel-top">
+            <h4>Slumpade bilder från galleriet</h4>
+            <button className="ghost-button" onClick={navigateToGallery}>
+              Se galleri
+            </button>
+          </div>
+          <p className="muted">Kommer snart.</p>
+        </section>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const Login = ({ setAdmin, closeModal }) => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const Login = ({ setAdmin, closeModal }) => {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
 
       if (userCredential.user.email === "mail@polarmotor.se") {
@@ -33,9 +34,8 @@ const Login = ({ setAdmin, closeModal }) => {
   };
 
   return (
-    <div>
-      <h2>Logga in som Admin</h2>
-      {error && <p>{error}</p>}
+    <div className="login-form">
+      {error && <p className="login-error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -43,6 +43,7 @@ const Login = ({ setAdmin, closeModal }) => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="E-post"
           required
+          className="login-input mb-2"
         />
         <input
           type="password"
@@ -50,8 +51,11 @@ const Login = ({ setAdmin, closeModal }) => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Lösenord"
           required
+          className="login-input mb-2"
         />
-        <button type="submit">Logga in</button>
+        <button type="submit" className="btn btn-primary login-submit mt-2">
+          Logga in
+        </button>
       </form>
     </div>
   );
