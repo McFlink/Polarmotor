@@ -30,7 +30,6 @@ const FindUs = () => {
           zoom={15}
           scrollWheelZoom={false}
           className="findus-map"
-          style={{ height: "clamp(320px, 50vh, 420px)", width: "100%" }}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
