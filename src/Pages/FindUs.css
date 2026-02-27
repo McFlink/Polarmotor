@@ -1,0 +1,42 @@
+.findus-shell {
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+.findus-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.findus-lede {
+  margin: 0;
+  color: var(--muted);
+}
+
+.map-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.findus-map {
+  width: 100%;
+  /* height: 580px !important; */
+}
+
+.popup-content a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.popup-content a:hover {
+  color: #ffc35a;
+}
+
+@media (max-width: 640px) {
+  .findus-map {
+    height: 320px;
+  }
+}
