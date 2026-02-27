@@ -113,7 +113,7 @@ const News = () => {
         imageUrl = await uploadImage(
           "news-images",
           updatedData.image,
-          itemToUpdate.item
+          itemToUpdate.item,
         );
       } else {
         imageUrl = itemToUpdate.image; // Behåll den gamla bilden om ingen ny laddas upp

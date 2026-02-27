@@ -216,7 +216,7 @@ const Home = () => {
 
         <section className="home-panel latest-buy-container">
           <div className="panel-top">
-            <h4>Senast inlagda under "köpes"</h4>
+            <h4>Senast inlagda under köpes</h4>
             <button className="ghost-button" onClick={navigateToBuyObjects}>
               Se alla produkter
             </button>
