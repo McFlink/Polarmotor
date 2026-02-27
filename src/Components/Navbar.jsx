@@ -33,7 +33,7 @@ const NavigationBar = () => {
           </Nav>
         </Navbar.Collapse>
         <div className="nav-actions link-group">
-          <Dropdown className="custom-dropdown">
+          <Dropdown className="custom-dropdown me-5">
             <Dropdown.Toggle variant="dark" id="dropdown-basic">
               Navigera
             </Dropdown.Toggle>
@@ -67,7 +67,7 @@ const NavigationBar = () => {
               </Dropdown>
             ) : (
               <Button variant="primary" onClick={handleLoginClick}>
-                Logga in som admin
+                Logga in
               </Button>
             )}
           </div>

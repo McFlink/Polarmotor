@@ -35,7 +35,6 @@ const Login = ({ setAdmin, closeModal }) => {
 
   return (
     <div className="login-form">
-      <h2>Logga in som Admin</h2>
       {error && <p className="login-error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input

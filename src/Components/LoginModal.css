@@ -13,21 +13,20 @@
 .login-modal-content .modal-header,
 .login-modal-content .modal-footer {
   border-color: var(--border);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.02),
-    rgba(255, 255, 255, 0)
-  );
+  background: var(--card);
+  color: var(--text);
 }
 
 .login-modal-content .modal-title {
   font-weight: 700;
   letter-spacing: 0.01em;
-  color: #f8fafc;
+  color: var(--text);
 }
 
 .login-modal-content .modal-body {
   padding: 1.4rem;
+  background: var(--card);
+  color: var(--text);
 }
 
 .login-modal-content .btn-secondary {
