@@ -1,7 +1,6 @@
 import "./Contact.css";
 import React from "react";
 import { Table } from "react-bootstrap";
-import mcImage from "../tempimages/mc.jfif";
 
 const Contact = () => {
   return (
@@ -34,14 +33,14 @@ const Contact = () => {
             </tr>
           </tbody>
         </Table>
-        <div className="image-div">
+        {/* <div className="image-div">
           <img
             src={mcImage}
             alt="motorcycle"
             className="img-fluid"
             loading="lazy"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
