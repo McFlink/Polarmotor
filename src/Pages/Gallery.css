@@ -1,0 +1,116 @@
+.gallery-shell {
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+.gallery-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.gallery-lede {
+  color: var(--muted);
+  max-width: 720px;
+  margin: 0;
+}
+
+.gallery-status {
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-card {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(59, 199, 255, 0.35);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-card:focus-visible {
+  outline: 3px solid rgba(59, 199, 255, 0.35);
+  outline-offset: 3px;
+}
+
+.gallery-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #1f2937);
+}
+
+.gallery-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.65rem 0.75rem;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 15, 22, 0) 0%,
+    rgba(11, 15, 22, 0.85) 100%
+  );
+  color: #f8fafc;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.gallery-modal-dialog {
+  max-width: 900px;
+}
+
+.gallery-modal-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  color: var(--text);
+}
+
+.gallery-modal-img {
+  width: 100%;
+  height: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.gallery-modal-footer {
+  border-color: var(--border);
+  justify-content: flex-start;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
