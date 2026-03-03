@@ -1,10 +1,47 @@
 .about-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 0.75rem;
 }
 
-.about-body {
-  font-size: 20px;
-  max-width: 800px;
+.about-container h1 {
+  text-align: center;
+}
+
+.about-card {
+  padding: 1.5rem;
+}
+
+.about-text {
+  margin: 0;
+  font-size: 1.05rem;
+  white-space: pre-line;
+  color: var(--text);
+}
+
+.about-textarea {
+  width: 100%;
+  min-height: 260px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+
+.about-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(242, 180, 65, 0.15);
+}
+
+.about-container .btn {
+  width: auto;
+  align-self: center; /* om flex-stretch är boven */
 }
